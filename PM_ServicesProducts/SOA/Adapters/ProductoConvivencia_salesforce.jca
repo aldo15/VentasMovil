@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="ProductoConvivenciaPortType" adapter="salesforce" wsdlLocation="../WSDLs/ProductoConvivencia.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="cloud/CloudAdapter">
+      <non-managed-connection managedConnectionFactoryClassName="oracle.cloud.connector.salesforce.SalesforceConnectionFactory">
+         <property name="targetWSDLURL" value="../WSDLs/enterpriseQA3.0.wsdl"/>
+         <property name="csfkey" value="keySalesforceQA"/>
+         <property name="csfMap" value="SOA"/>
+         <property name="applicationVersion" value="37.0"/>
+      </non-managed-connection>
+   </connection-factory>
+   <endpoint-interaction portType="ProductoConvivenciaPortType" operation="query">
+      <interaction-spec className="oracle.tip.adapter.cloud.CloudInteractionSpec">
+         <property name="targetOperation" value="query"/>
+         <property name="operationPath" value=""/>
+         <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoConvivencia#new"/>
+         <property name="selectedObjects" value="DP_ProductoConvivencia__c,QueryParameters"/>
+         <property name="oracle.cloud.rt.queryString" value="SELECT Id, Name, Comentario__c, Estatus__c, ProductoId__c, ProductoExcIncId__c, Tipo__c FROM DP_ProductoConvivencia__c WHERE ProductoId__c = '&amp;ProductoId__c' And Estatus__c = 'Activo'  "/>
+         <property name="oracle.cloud.rt.suppressResponse" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

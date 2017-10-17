@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<composite name="PM_ServicesProducts" revision="1.6" label="2016-07-20_12-04-32_055" mode="active" state="on" xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:orawsp="http://schemas.oracle.com/ws/2006/01/policy" xmlns:ui="http://xmlns.oracle.com/soa/designer/" xmlns:sca-ext="http://xmlns.oracle.com/sca/1.0-ext">
+   <import namespace="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts" location="WSDLs/PM_ServicesProducts.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosIncluidos" location="WSDLs/ServiciosIncluidos.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductosIncluidos" location="WSDLs/ProductosIncluidos.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoAdicionales" location="WSDLs/ProductoAdicionales.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales" location="WSDLs/ServiciosAdicionales.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/Promociones" location="WSDLs/Promociones.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/SeguridadBRM/LoginUserApp/BPELLoginUserApp" location="http://soabalanceada/soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/BPELLoginUserApp.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/RestService" location="soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/RestService.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesConvivencia" location="WSDLs/PromocionesConvivencia.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesDetalle" location="WSDLs/PromocionesDetalle.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesServicioProducto" location="WSDLs/PromocionesServicioProducto.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PSP_ServicioP_ProdC" location="WSDLs/PSP_ServicioP_ProdC.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoConvivencia" location="WSDLs/ProductoConvivencia.wsdl" importType="wsdl"/>
+   <service name="pm_servicesproducts_client_ep" ui:wsdlLocation="WSDLs/PM_ServicesProducts.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts#wsdl.interface(PM_ServicesProducts)"/>
+      <binding.ws port="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts#wsdl.endpoint(pm_servicesproducts_client_ep/PM_ServicesProducts_pt)"/>
+   </service>
+   <service name="RestService" ui:wsdlLocation="soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/RestService.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/RestService#wsdl.interface(RestService_ptt)"/>
+      <binding.rest config="WADLs/RestService.wadl"/>
+   </service>
+   <property name="productVersion" type="xs:string" many="false">12.1.3.0.0</property>
+   <property name="compositeID" type="xs:string" many="false">63c9a9e3-2f18-4819-82db-cbe882f78ade</property>
+   <component name="PM_ServicesProducts" version="2.0">
+      <implementation.bpel src="BPEL/PM_ServicesProducts.bpel"/>
+      <componentType>
+         <service name="pm_servicesproducts_client" ui:wsdlLocation="WSDLs/PM_ServicesProducts.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts#wsdl.interface(PM_ServicesProducts)"/>
+         </service>
+         <reference name="ProductosIncluidos" ui:wsdlLocation="WSDLs/ProductosIncluidos.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductosIncluidos#wsdl.interface(ProductosIncluidosPortType)"/>
+         </reference>
+         <reference name="ServiciosIncluidos" ui:wsdlLocation="WSDLs/ServiciosIncluidos.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosIncluidos#wsdl.interface(ServiciosIncluidosPortType)"/>
+         </reference>
+         <reference name="ProductoAdicionales" ui:wsdlLocation="WSDLs/ProductoAdicionales.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoAdicionales#wsdl.interface(ProductoAdicionalesPortType)"/>
+         </reference>
+         <reference name="ServiciosAdicionales" ui:wsdlLocation="WSDLs/ServiciosAdicionales.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales#wsdl.interface(ServiciosAdicionalesPortType)"/>
+         </reference>
+         <reference name="Promociones" ui:wsdlLocation="WSDLs/Promociones.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/Promociones#wsdl.interface(PromocionesPortType)"/>
+         </reference>
+         <reference name="LoginUserApp" ui:wsdlLocation="http://soabalanceada/soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/BPELLoginUserApp.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/SeguridadBRM/LoginUserApp/BPELLoginUserApp#wsdl.interface(BPELLoginUserApp)"/>
+         </reference>
+         <reference name="PromocionesConvivencia" ui:wsdlLocation="WSDLs/PromocionesConvivencia.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesConvivencia#wsdl.interface(PromocionesConvivenciaPortType)"/>
+         </reference>
+         <reference name="PromocionesDetalle" ui:wsdlLocation="WSDLs/PromocionesDetalle.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesDetalle#wsdl.interface(PromocionesDetallePortType)"/>
+         </reference>
+         <reference name="PromocionesServicioProducto" ui:wsdlLocation="WSDLs/PromocionesServicioProducto.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesServicioProducto#wsdl.interface(PromocionesServicioProductoPortType)"/>
+         </reference>
+         <reference name="PSP_ServicioP_ProdC" ui:wsdlLocation="WSDLs/PSP_ServicioP_ProdC.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PSP_ServicioP_ProdC#wsdl.interface(PSP_ServicioP_ProdCPortType)"/>
+         </reference>
+         <reference name="ProductoConvivencia" ui:wsdlLocation="WSDLs/ProductoConvivencia.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoConvivencia#wsdl.interface(ProductoConvivenciaPortType)"/>
+         </reference>
+      </componentType>
+      <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
+      <property name="bpel.config.auditLevel">Development</property>
+   </component>
+   <component name="Mediator">
+      <implementation.mediator src="Mediators/Mediator1.mplan"/>
+      <componentType>
+         <service name="Mediator1" ui:wsdlLocation="soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/RestService.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/RestService#wsdl.interface(RestService_ptt)"/>
+         </service>
+         <reference name="PM_ServicesProducts.pm_servicesproducts_client" ui:wsdlLocation="WSDLs/PM_ServicesProducts.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts#wsdl.interface(PM_ServicesProducts)"/>
+         </reference>
+      </componentType>
+   </component>
+   <reference name="ServiciosIncluidos" ui:wsdlLocation="WSDLs/ServiciosIncluidos.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosIncluidos#wsdl.interface(ServiciosIncluidosPortType)"/>
+      <binding.jca config="Adapters/ServiciosIncluidos_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <reference name="ProductosIncluidos" ui:wsdlLocation="WSDLs/ProductosIncluidos.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductosIncluidos#wsdl.interface(ProductosIncluidosPortType)"/>
+      <binding.jca config="Adapters/ProductosIncluidos_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <reference name="ProductoAdicionales" ui:wsdlLocation="WSDLs/ProductoAdicionales.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoAdicionales#wsdl.interface(ProductoAdicionalesPortType)"/>
+      <binding.jca config="Adapters/ProductoAdicionales_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <reference name="ServiciosAdicionales" ui:wsdlLocation="WSDLs/ServiciosAdicionales.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales#wsdl.interface(ServiciosAdicionalesPortType)"/>
+      <binding.jca config="Adapters/ServiciosAdicionales_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <reference name="Promociones" ui:wsdlLocation="WSDLs/Promociones.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/Promociones#wsdl.interface(PromocionesPortType)"/>
+      <binding.jca config="Adapters/Promociones_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <reference name="LoginUserApp" ui:wsdlLocation="http://soabalanceada/soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/BPELLoginUserApp.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/SeguridadBRM/LoginUserApp/BPELLoginUserApp#wsdl.interface(BPELLoginUserApp)"/>
+      <binding.ws port="http://xmlns.oracle.com/SeguridadBRM/LoginUserApp/BPELLoginUserApp#wsdl.endpoint(bpelloginuserapp_client_ep/BPELLoginUserApp_pt)" location="http://soabalanceada/soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/bpelloginuserapp_client_ep?WSDL" soapVersion="1.1">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+      </binding.ws>
+   </reference>
+   <reference name="PromocionesConvivencia" ui:wsdlLocation="WSDLs/PromocionesConvivencia.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesConvivencia#wsdl.interface(PromocionesConvivenciaPortType)"/>
+      <binding.jca config="Adapters/PromocionesConvivencia_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <reference name="PromocionesDetalle" ui:wsdlLocation="WSDLs/PromocionesDetalle.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesDetalle#wsdl.interface(PromocionesDetallePortType)"/>
+      <binding.jca config="Adapters/PromocionesDetalle_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <reference name="PromocionesServicioProducto" ui:wsdlLocation="WSDLs/PromocionesServicioProducto.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesServicioProducto#wsdl.interface(PromocionesServicioProductoPortType)"/>
+      <binding.jca config="Adapters/PromocionesServicioProducto_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <reference name="PSP_ServicioP_ProdC" ui:wsdlLocation="WSDLs/PSP_ServicioP_ProdC.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PSP_ServicioP_ProdC#wsdl.interface(PSP_ServicioP_ProdCPortType)"/>
+      <binding.jca config="Adapters/PSP_ServicioP_ProdC_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <reference name="ProductoConvivencia" ui:wsdlLocation="WSDLs/ProductoConvivencia.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoConvivencia#wsdl.interface(ProductoConvivenciaPortType)"/>
+      <binding.jca config="Adapters/ProductoConvivencia_salesforce.jca"/>
+      <property name="jca.retry.count" type="xs:integer" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:integer" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:integer" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:integer" many="false" override="may">120</property>
+   </reference>
+   <wire>
+      <source.uri>pm_servicesproducts_client_ep</source.uri>
+      <target.uri>PM_ServicesProducts/pm_servicesproducts_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/ProductosIncluidos</source.uri>
+      <target.uri>ProductosIncluidos</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/ServiciosIncluidos</source.uri>
+      <target.uri>ServiciosIncluidos</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/ProductoAdicionales</source.uri>
+      <target.uri>ProductoAdicionales</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/ServiciosAdicionales</source.uri>
+      <target.uri>ServiciosAdicionales</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/Promociones</source.uri>
+      <target.uri>Promociones</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/LoginUserApp</source.uri>
+      <target.uri>LoginUserApp</target.uri>
+   </wire>
+   <wire>
+      <source.uri>RestService</source.uri>
+      <target.uri>Mediator/Mediator1</target.uri>
+   </wire>
+   <wire>
+      <source.uri>Mediator/PM_ServicesProducts.pm_servicesproducts_client</source.uri>
+      <target.uri>PM_ServicesProducts/pm_servicesproducts_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/PromocionesConvivencia</source.uri>
+      <target.uri>PromocionesConvivencia</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/PromocionesDetalle</source.uri>
+      <target.uri>PromocionesDetalle</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/PromocionesServicioProducto</source.uri>
+      <target.uri>PromocionesServicioProducto</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/PSP_ServicioP_ProdC</source.uri>
+      <target.uri>PSP_ServicioP_ProdC</target.uri>
+   </wire>
+   <wire>
+      <source.uri>PM_ServicesProducts/ProductoConvivencia</source.uri>
+      <target.uri>ProductoConvivencia</target.uri>
+   </wire>
+</composite>

@@ -1,0 +1,389 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="process">
+      <complexType>
+         <sequence>
+            <element name="Login">
+               <complexType>
+                  <sequence>
+                     <element name="User" type="string"/>
+                     <element name="Password" type="string"/>
+                     <element name="Ip" type="string"/>
+                  </sequence>
+               </complexType>
+            </element>
+            <element name="Info">
+               <complexType>
+                  <sequence>
+                     <element name="IdPlan" type="string"/>
+                  </sequence>
+               </complexType>
+            </element>
+         </sequence>
+      </complexType>
+   </element>
+   <element name="processResponse">
+      <complexType>
+         <sequence>
+            <element name="Result">
+               <complexType>
+                  <sequence>
+                     <element name="Result" type="string"/>
+                     <element name="IdResult" type="string"/>
+                     <element name="Description" type="string"/>
+                  </sequence>
+               </complexType>
+            </element>
+            <element name="ArrServiciosIncluidos" maxOccurs="unbounded" minOccurs="0">
+               <complexType>
+                  <sequence>
+                     <element name="Id" type="string"/>
+                     <element name="Nombre" type="string"/>
+                     <element name="CantidadEquiposAutomaticos" type="string"/>
+                     <element name="Comentario" type="string"/>
+                     <element name="MaximoAgregar" type="string"/>
+                     <element name="Nombrecomercial" type="string"/>
+                     <element name="NombreEditable" type="string"/>
+                     <element name="PlanId" type="string"/>
+                     <element name="Precio" type="string"/>
+                     <element name="SeActiva" type="string"/>
+                     <element name="SeFactura" type="string"/>
+                     <element name="ServicioId" type="string"/>
+                     <element name="SRV_Mode" type="string"/>
+                     <element name="TipoServicio" type="string"/>
+                     <element name="TipoTelefonia" type="string"/>
+                     <element name="ArrProductosIncluidos" maxOccurs="unbounded" minOccurs="0">
+                        <complexType>
+                           <sequence>
+                              <element name="Id" type="string"/>
+                              <element name="Nombre" type="string"/>
+                              <element name="AgrupacionAddon" type="string"/>
+                              <element name="CantidadDN" type="string"/>
+                              <element name="CantidadTroncal" type="string"/>
+                              <element name="Comentario" type="string"/>
+                              <element name="EsAutomaticoCiudad" type="string"/>
+                              <element name="EsCargoUnico" type="string"/>
+                              <element name="Estatus" type="string"/>
+                              <element name="EsVisible" type="string"/>
+                              <element name="IdBrmArrear" type="string"/>
+                              <element name="IdBrmCU" type="string"/>
+                              <element name="IdBrmForward" type="string"/>
+                              <element name="IEPS" type="string"/>
+                              <element name="IVA" type="string"/>
+                              <element name="MaximoAgregar" type="string"/>
+                              <element name="NombreEditable" type="string"/>
+                              <element name="PlanDescuentoId" type="string"/>
+                              <element name="Plazo" type="string"/>
+                              <element name="PrecioBase" type="string"/>
+                              <element name="PrecioEditable" type="string"/>
+                              <element name="PrecioProntoPago" type="string"/>
+                              <element name="ProductoPadre" type="string"/>
+                              <element name="TipoProducto" type="string"/>
+                              <element name="IdProducto" type="string"/>
+                              <element name="NameProducto" type="string"/>
+                              <element name="ProductoId" type="string"/>
+                              <element name="Ciudad" type="string"/>
+                              <element name="VelocidadSubida" type="string"/>
+                              <element name="VelocidadBajada" type="string"/>
+                              <element name="TieneIPDinamica" type="string"/>
+                              <element name="TieneIPFija" type="string"/>
+                              <element name="TieneSTBAdicional" type="string"/>
+                              <element name="EsCCTV" type="string"/>
+                              <element name="EsWiFi" type="string"/>
+                              <element name="Cantidad" type="string"/>
+                              <element name="EstatusProducto" type="string"/>
+                              <element name="FechaInicio" type="string"/>
+                              <element name="FechaFin" type="string"/>
+                              <element name="ComentarioProducto" type="string"/>
+                              <element name="EsProntoPago" type="string"/>
+                           </sequence>
+                        </complexType>
+                     </element>
+                  </sequence>
+               </complexType>
+            </element>
+            <element name="ArrServiciosAdicionales" maxOccurs="unbounded" minOccurs="0">
+               <complexType>
+                  <sequence>
+                     <element name="Id" type="string"/>
+                     <element name="Nombre" type="string"/>
+                     <element name="CantidadEquiposAutomaticos" type="string"/>
+                     <element name="Comentario" type="string"/>
+                     <element name="MaximoAgregar" type="string"/>
+                     <element name="Nombrecomercial" type="string"/>
+                     <element name="NombreEditable" type="string"/>
+                     <element name="PlanId" type="string"/>
+                     <element name="Precio" type="string"/>
+                     <element name="SeActiva" type="string"/>
+                     <element name="SeFactura" type="string"/>
+                     <element name="ServicioId" type="string"/>
+                     <element name="SRV_Mode" type="string"/>
+                     <element name="TipoServicio" type="string"/>
+                     <element name="TipoTelefonia" type="string"/>
+                     <element name="ArrProductosIncluidos" maxOccurs="unbounded" minOccurs="0">
+                        <complexType>
+                           <sequence>
+                              <element name="Id" type="string"/>
+                              <element name="Nombre" type="string"/>
+                              <element name="AgrupacionAddon" type="string"/>
+                              <element name="CantidadDN" type="string"/>
+                              <element name="CantidadTroncal" type="string"/>
+                              <element name="Comentario" type="string"/>
+                              <element name="EsAutomaticoCiudad" type="string"/>
+                              <element name="EsCargoUnico" type="string"/>
+                              <element name="Estatus" type="string"/>
+                              <element name="EsVisible" type="string"/>
+                              <element name="IdBrmArrear" type="string"/>
+                              <element name="IdBrmCU" type="string"/>
+                              <element name="IdBrmForward" type="string"/>
+                              <element name="IEPS" type="string"/>
+                              <element name="IVA" type="string"/>
+                              <element name="MaximoAgregar" type="string"/>
+                              <element name="NombreEditable" type="string"/>
+                              <element name="PlanDescuentoId" type="string"/>
+                              <element name="Plazo" type="string"/>
+                              <element name="PrecioBase" type="string"/>
+                              <element name="PrecioEditable" type="string"/>
+                              <element name="PrecioProntoPago" type="string"/>
+                              <element name="ProductoPadre" type="string"/>
+                              <element name="TipoProducto" type="string"/>
+                              <element name="IdProducto" type="string"/>
+                              <element name="NameProducto" type="string"/>
+                              <element name="ProductoId" type="string"/>
+                              <element name="Ciudad" type="string"/>
+                              <element name="VelocidadSubida" type="string"/>
+                              <element name="VelocidadBajada" type="string"/>
+                              <element name="TieneIPDinamica" type="string"/>
+                              <element name="TieneIPFija" type="string"/>
+                              <element name="TieneSTBAdicional" type="string"/>
+                              <element name="EsCCTV" type="string"/>
+                              <element name="EsWiFi" type="string"/>
+                              <element name="Cantidad" type="string"/>
+                              <element name="EstatusProducto" type="string"/>
+                              <element name="FechaInicio" type="string"/>
+                              <element name="FechaFin" type="string"/>
+                              <element name="ComentarioProducto" type="string"/>
+                              <element name="EsProntoPago" type="string"/>
+                           </sequence>
+                        </complexType>
+                     </element>
+                  </sequence>
+               </complexType>
+            </element>
+            <element name="ArrProductosAdicionales" maxOccurs="unbounded" minOccurs="0">
+               <complexType>
+                  <sequence>
+                     <element name="Id" type="string"/>
+                     <element name="Nombre" type="string"/>
+                     <element name="AgrupacionAddon" type="string"/>
+                     <element name="CantidadDN" type="string"/>
+                     <element name="CantidadTroncal" type="string"/>
+                     <element name="Comentario" type="string"/>
+                     <element name="EsAutomaticoCiudad" type="string"/>
+                     <element name="EsCargoUnico" type="string"/>
+                     <element name="Estatus" type="string"/>
+                     <element name="EsVisible" type="string"/>
+                     <element name="IdBrmArrear" type="string"/>
+                     <element name="IdBrmCU" type="string"/>
+                     <element name="IdBrmForward" type="string"/>
+                     <element name="IEPS" type="string"/>
+                     <element name="IVA" type="string"/>
+                     <element name="MaximoAgregar" type="string"/>
+                     <element name="NombreEditable" type="string"/>
+                     <element name="PlanDescuentoId" type="string"/>
+                     <element name="Plazo" type="string"/>
+                     <element name="PrecioBase" type="string"/>
+                     <element name="PrecioEditable" type="string"/>
+                     <element name="PrecioProntoPago" type="string"/>
+                     <element name="ProductoPadre" type="string"/>
+                     <element name="TipoProducto" type="string"/>
+                     <element name="TipoProductoTexto" type="string"/>
+                     <element name="IdProducto" type="string"/>
+                     <element name="NameProducto" type="string"/>
+                     <element name="ProductoId" type="string"/>
+                     <element name="Ciudad" type="string"/>
+                     <element name="VelocidadSubida" type="string"/>
+                     <element name="VelocidadBajada" type="string"/>
+                     <element name="TieneIPDinamica" type="string"/>
+                     <element name="TieneIPFija" type="string"/>
+                     <element name="TieneSTBAdicional" type="string"/>
+                     <element name="EsCCTV" type="string"/>
+                     <element name="EsWiFi" type="string"/>
+                     <element name="Cantidad" type="string"/>
+                     <element name="EstatusProducto" type="string"/>
+                     <element name="FechaInicio" type="string"/>
+                     <element name="FechaFin" type="string"/>
+                     <element name="ComentarioProducto" type="string"/>
+                     <element name="EsProntoPago" type="string"/>
+                     <element name="ArrProductosConvivencia" maxOccurs="unbounded" minOccurs="0">
+                        <complexType>
+                           <sequence>
+                              <element name="Id" type="string"/>
+                              <element name="Name" type="string"/>
+                              <element name="Comentario" type="string"/>
+                              <element name="Estatus" type="string"/>
+                              <element name="ProductoId" type="string"/>
+                              <element name="ProductoExcIncId" type="string"/>
+                              <element name="Tipo" type="string"/>
+                           </sequence>
+                        </complexType>
+                     </element>
+                  </sequence>
+               </complexType>
+            </element>
+            <element name="ArrPromocionesPlan" maxOccurs="unbounded" minOccurs="0">
+               <complexType>
+                  <sequence>
+                     <element name="Id" type="string"/>
+                     <element name="Nombre" type="string"/>
+                     <element name="Comentario" type="string"/>
+                     <element name="Descripcion" type="string"/>
+                     <element name="Plan" type="string"/>
+                     <element name="PlanCambioParrilla" type="string"/>
+                     <element name="Promocion" type="string"/>
+                     <element name="Estatus" type="string"/>
+                     <element name="Plazo" type="string"/>
+                     <element name="EstatusPromociones" type="string"/>
+                     <element name="ComentarioPromocion" type="string"/>
+                     <element name="NombrePromocion" type="string"/>
+                     <element name="CompaniaId" type="string"/>
+                     <element name="EsAutomatica" type="string"/>
+                     <element name="EsPostVenta" type="string"/>
+                     <element name="EstatusPromocion" type="string"/>
+                     <element name="EsVentaNueva" type="string"/>
+                     <element name="FechaFin" type="string"/>
+                     <element name="FechaInicio" type="string"/>
+                     <element name="IdPromocion" type="string"/>
+                     <element name="ArrPromocionesConvivencia" maxOccurs="unbounded" minOccurs="0">
+                        <complexType>
+                           <sequence>
+                              <element name="Id" type="string"/>
+                              <element name="Nombre" type="string"/>
+                              <element name="Estatus" type="string"/>
+                              <element name="PromocionPlanId" type="string"/>
+                              <element name="PromocionExcId" type="string"/>
+                           </sequence>
+                        </complexType>
+                     </element>
+                     <element name="ArrPromocionesDetalle" maxOccurs="unbounded" minOccurs="0">
+                        <complexType>
+                           <sequence>
+                              <element name="Id" type="string"/>
+                              <element name="Nombre" type="string"/>
+                              <element name="CAT_CanalVenta" type="string"/>
+                              <element name="CAT_Ciudad" type="string"/>
+                              <element name="CAT_Cluster" type="string"/>
+                              <element name="CAT_Plazo" type="string"/>
+                              <element name="CodigoPostal" type="string"/>
+                              <element name="CAT_TipoPago" type="string"/>
+                              <element name="DP_Promocion" type="string"/>
+                              <element name="Estatus" type="string"/>
+                           </sequence>
+                        </complexType>
+                     </element>
+                     <element name="ArrDP_PromocionesServicioProducto" maxOccurs="unbounded" minOccurs="0">
+                        <complexType>
+                           <sequence>
+                              <element name="Id" type="string"/>
+                              <element name="Nombre" type="string"/>
+                              <element name="AgregarServicio" type="string"/>
+                              <element name="EsCargoUnico" type="string"/>
+                              <element name="Estatus" type="string"/>
+                              <element name="IEPS" type="string"/>
+                              <element name="IVA" type="string"/>
+                              <element name="MesInicio" type="string"/>
+                              <element name="Monto__c" type="string"/>
+                              <element name="PlanServicio" type="string"/>
+                              <element name="Porcentaje" type="string"/>
+                              <element name="ProductoCaracteristica" type="string"/>
+                              <element name="PromocionPlan" type="string"/>
+                              <element name="ServicioProducto" type="string"/>
+                              <element name="VigenciaMes" type="string"/>
+                              <element name="IdProductoC" type="string"/>
+                              <element name="NameProductoC" type="string"/>
+                              <element name="ProductoId" type="string"/>
+                              <element name="Ciudad" type="string"/>
+                              <element name="VelocidadSubida" type="string"/>
+                              <element name="VelocidadBajada" type="string"/>
+                              <element name="TieneIPDinamica" type="string"/>
+                              <element name="TieneIPFija" type="string"/>
+                              <element name="TieneSTBAdicional" type="string"/>
+                              <element name="EsCCTV" type="string"/>
+                              <element name="EsWiFi" type="string"/>
+                              <element name="Cantidad" type="string"/>
+                              <element name="EstatusProductoC" type="string"/>
+                              <element name="FechaInicio" type="string"/>
+                              <element name="FechaFin" type="string"/>
+                              <element name="Comentario" type="string"/>
+                              <element name="EsProntoPago" type="string"/>
+                              <element name="DP_ServicioProducto">
+                                 <complexType>
+                                    <sequence>
+                                       <element name="Id" type="string"/>
+                                       <element name="Nombre" type="string"/>
+                                       <element name="AgrupacionAddon" type="string"/>
+                                       <element name="CantidadDN" type="string"/>
+                                       <element name="CantidadTroncal" type="string"/>
+                                       <element name="Comentario" type="string"/>
+                                       <element name="EsAutomaticoCiudad" type="string"/>
+                                       <element name="EsCargoUnico" type="string"/>
+                                       <element name="Estatus" type="string"/>
+                                       <element name="EsVisible" type="string"/>
+                                       <element name="IdBrmArrear" type="string"/>
+                                       <element name="IdBrmCU" type="string"/>
+                                       <element name="IdBrmForward" type="string"/>
+                                       <element name="IEPS" type="string"/>
+                                       <element name="MaximoAgregar" type="string"/>
+                                       <element name="NombreEditable" type="string"/>
+                                       <element name="PlanDescuentoId" type="string"/>
+                                       <element name="Plazo" type="string"/>
+                                       <element name="PrecioBase" type="string"/>
+                                       <element name="PrecioEditable" type="string"/>
+                                       <element name="PrecioProntoPago" type="string"/>
+                                       <element name="ProductoPadre" type="string"/>
+                                       <element name="TipoProducto" type="string"/>
+                                       <element name="TipoProductoTexto" type="string"/>
+                                       <element name="IdProducto" type="string"/>
+                                       <element name="NameProducto" type="string"/>
+                                       <element name="ProductoId" type="string"/>
+                                       <element name="Ciudad" type="string"/>
+                                       <element name="VelocidadSubida" type="string"/>
+                                       <element name="VelocidadBajada" type="string"/>
+                                       <element name="TieneIPDinamica" type="string"/>
+                                       <element name="TieneIPFija" type="string"/>
+                                       <element name="TieneSTBAdicional" type="string"/>
+                                       <element name="EsCCTV" type="string"/>
+                                       <element name="EsWiFi" type="string"/>
+                                       <element name="Cantidad" type="string"/>
+                                       <element name="EstatusProducto" type="string"/>
+                                       <element name="FechaInicio" type="string"/>
+                                       <element name="FechaFin" type="string"/>
+                                       <element name="ComentarioProducto" type="string"/>
+                                       <element name="EsProntoPago" type="string"/>
+                                       <element name="IdPromocionSP" type="string"/>
+                                       <element name="ArrProductosConvivencia" maxOccurs="unbounded" minOccurs="0">
+                                          <complexType>
+                                             <sequence>
+                                                <element name="Id" type="string"/>
+                                                <element name="Name" type="string"/>
+                                                <element name="Comentario" type="string"/>
+                                                <element name="Estatus" type="string"/>
+                                                <element name="ProductoId" type="string"/>
+                                                <element name="ProductoExcIncId" type="string"/>
+                                                <element name="Tipo" type="string"/>
+                                             </sequence>
+                                          </complexType>
+                                       </element>
+                                    </sequence>
+                                 </complexType>
+                              </element>
+                           </sequence>
+                        </complexType>
+                     </element>
+                  </sequence>
+               </complexType>
+            </element>
+         </sequence>
+      </complexType>
+   </element>
+</schema>

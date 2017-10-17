@@ -1,0 +1,1873 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Jul 20 12:04:44 CDT 2016
+  Author:  agarcia
+  Type: BPEL 2.0 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="PM_ServicesProducts"
+               targetNamespace="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:ui="http://xmlns.oracle.com/soa/designer"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductosIncluidos"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosIncluidos"
+         xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoAdicionales"
+         xmlns:ns4="http://xmlns.oracle.com/SeguridadBRM/LoginUserApp/BPELLoginUserApp"
+         xmlns:ns5="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns6="http://xml.oracle.com/types/ServiciosIncluidos"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns7="http://xml.oracle.com/types/ServiciosAdicionales"
+         xmlns:ns8="http://xml.oracle.com/types/ProductosIncluidos"
+         xmlns:ns9="http://xml.oracle.com/types/ProductoAdicionales"
+         xmlns:ns10="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/Promociones"
+         xmlns:ns11="http://xml.oracle.com/types/Promociones" xmlns:ns12="urn:sobject.enterprise.soap.sforce.com"
+         xmlns:ns13="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesConvivencia"
+         xmlns:ns14="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesDetalle"
+         xmlns:ns15="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesServicioProducto"
+         xmlns:ns16="http://xml.oracle.com/types/PromocionesConvivencia"
+         xmlns:ns17="http://xml.oracle.com/types/PromocionesServicioProducto"
+         xmlns:ns18="http://xml.oracle.com/types/PromocionesDetalle"
+         xmlns:ns19="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PSP_ServicioP_ProdC"
+         xmlns:ns20="http://xml.oracle.com/types/PSP_ServicioP_ProdC"
+         xmlns:ns21="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoConvivencia"
+         xmlns:ns22="http://xml.oracle.com/types/ProductoConvivencia">
+
+    <import ui:processWSDL="true" namespace="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts" location="../WSDLs/PM_ServicesProducts.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="pm_servicesproducts_client" partnerLinkType="client:PM_ServicesProducts" myRole="PM_ServicesProductsProvider"/>
+    <partnerLink name="ProductosIncluidos" partnerLinkType="ns1:query_plt" partnerRole="query_role"/>
+    <partnerLink name="ServiciosIncluidos" partnerLinkType="ns2:query_plt" partnerRole="query_role"/>
+    <partnerLink name="ProductoAdicionales" partnerLinkType="ns3:query_plt" partnerRole="query_role"/>
+    <partnerLink name="ServiciosAdicionales" partnerLinkType="ns5:query_plt" partnerRole="query_role"/>
+    <partnerLink name="Promociones" partnerLinkType="ns10:query_plt" partnerRole="query_role"/>
+    <partnerLink name="LoginUserApp" partnerLinkType="ns4:BPELLoginUserApp" partnerRole="BPELLoginUserAppProvider"/>
+    <partnerLink name="PromocionesConvivencia" partnerLinkType="ns13:query_plt" partnerRole="query_role"/>
+    <partnerLink name="PromocionesDetalle" partnerLinkType="ns14:query_plt" partnerRole="query_role"/>
+    <partnerLink name="PromocionesServicioProducto" partnerLinkType="ns15:query_plt" partnerRole="query_role"/>
+    <partnerLink name="PSP_ServicioP_ProdC" partnerLinkType="ns19:query_plt" partnerRole="query_role"/>
+    <partnerLink name="ProductoConvivencia" partnerLinkType="ns21:query_plt" partnerRole="query_role"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:PM_ServicesProductsRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:PM_ServicesProductsResponseMessage"/>
+    <variable name="Invoke1_ServsIncluidos_InputVariable" messageType="ns2:queryRequestMessage"/>
+    <variable name="Invoke1_ServsIncluidos_OutputVariable" messageType="ns2:queryResponseMessage"/>
+    <variable name="Invoke1_SIncluidos_InputVariable" messageType="ns5:queryRequestMessage"/>
+    <variable name="Invoke1_SAdicionales_InputVariable" messageType="ns5:queryRequestMessage"/>
+    <variable name="Invoke1_SAdicionales_OutputVariable" messageType="ns5:queryResponseMessage"/>
+    <variable name="Invoke2_PIncluidos_InputVariable" messageType="ns1:queryRequestMessage"/>
+    <variable name="Invoke2_PIncluidos_OutputVariable" messageType="ns1:queryResponseMessage"/>
+    <variable name="Invoke1_PAdicionales_InputVariable" messageType="ns3:queryRequestMessage"/>
+    <variable name="Invoke1_PAdicionales_OutputVariable" messageType="ns3:queryResponseMessage"/>
+    <variable name="Invoke1_Promociones_InputVariable" messageType="ns10:queryRequestMessage"/>
+    <variable name="Invoke1_Promociones_OutputVariable" messageType="ns10:queryResponseMessage"/>
+    <variable name="Invoke2_Login_InputVariable" messageType="ns4:BPELLoginUserAppRequestMessage"/>
+    <variable name="Invoke2_Login_OutputVariable" messageType="ns4:BPELLoginUserAppResponseMessage"/>
+    <variable name="Invoke_PIncluidosSAdicionales_InputVariable" messageType="ns1:queryRequestMessage"/>
+    <variable name="Invoke_PIncluidosSAdicionales_OutputVariable" messageType="ns1:queryResponseMessage"/>
+    <variable name="Invoke_PromoConvivencia_InputVariable" messageType="ns13:queryRequestMessage"/>
+    <variable name="Invoke_PromoConvivencia_OutputVariable" messageType="ns13:queryResponseMessage"/>
+    <variable name="Invoke_PromoDetalles_InputVariable" messageType="ns14:queryRequestMessage"/>
+    <variable name="Invoke_PromoDetalles_OutputVariable" messageType="ns14:queryResponseMessage"/>
+    <variable name="Invoke_PromoServProd_InputVariable" messageType="ns15:queryRequestMessage"/>
+    <variable name="Invoke_PromoServProd_OutputVariable" messageType="ns15:queryResponseMessage"/>
+    <variable name="Invoke_PSPServicioProduct_InputVariable" messageType="ns19:queryRequestMessage"/>
+    <variable name="Invoke_PSPServicioProduct_OutputVariable" messageType="ns19:queryResponseMessage"/>
+    <variable name="Invoke_PConvivencia_InputVariable" messageType="ns21:queryRequestMessage"/>
+    <variable name="Invoke_PConvivencia_OutputVariable" messageType="ns21:queryResponseMessage"/>
+    <variable name="Invoke_PromoPConvivencia_InputVariable" messageType="ns21:queryRequestMessage"/>
+    <variable name="Invoke_PromoPConvivencia_OutputVariable" messageType="ns21:queryResponseMessage"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <sequence name="Sequence8">
+        <assign name="failed">
+          <copy>
+            <from>'1'</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:Result</to>
+          </copy>
+          <copy>
+            <from>'1'</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:IdResult</to>
+          </copy>
+          <copy>
+            <from>'Error general'</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:Description</to>
+          </copy>
+          <extensionAssignOperation>
+            <bpelx:remove>
+              <bpelx:target>$outputVariable.payload/client:ArrServiciosIncluidos</bpelx:target>
+            </bpelx:remove>
+          </extensionAssignOperation>
+          <extensionAssignOperation>
+            <bpelx:remove>
+              <bpelx:target>$outputVariable.payload/client:ArrServiciosAdicionales</bpelx:target>
+            </bpelx:remove>
+          </extensionAssignOperation>
+          <extensionAssignOperation>
+            <bpelx:remove>
+              <bpelx:target>$outputVariable.payload/client:ArrProductosAdicionales</bpelx:target>
+            </bpelx:remove>
+          </extensionAssignOperation>
+          <extensionAssignOperation>
+            <bpelx:remove>
+              <bpelx:target>$outputVariable.payload/client:ArrPromocionesPlan</bpelx:target>
+            </bpelx:remove>
+          </extensionAssignOperation>
+        </assign>
+        <reply name="GeneralFailed" partnerLink="pm_servicesproducts_client" variable="outputVariable"
+               portType="client:PM_ServicesProducts" operation="process"/>
+        <exit name="Exit1"/>
+      </sequence>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in PM_ServicesProducts.wsdl) -->
+    <receive name="receiveInput" partnerLink="pm_servicesproducts_client" portType="client:PM_ServicesProducts" operation="process" variable="inputVariable" createInstance="yes"/>
+    <scope name="ScpLogin">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userImage">
+            <![CDATA[approver_lg.png]]>
+          </bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+      <sequence>
+        <assign name="AssgLoginUserApp">
+          <copy>
+            <from>$inputVariable.payload/client:Login/client:User</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke2_Login_InputVariable.payload/ns4:userId</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.payload/client:Login/client:Password</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke2_Login_InputVariable.payload/ns4:password</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.payload/client:Login/client:Ip</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke2_Login_InputVariable.payload/ns4:ip</to>
+          </copy>
+          <copy>
+            <from>oraext:setFlowInstanceTitle(string($inputVariable.payload/client:Info/client:IdPlan))</from>
+            <to>$inputVariable.payload/client:Info/client:IdPlan</to>
+          </copy>
+        </assign>
+        <invoke name="InkLoginUserApp" partnerLink="LoginUserApp" portType="ns4:BPELLoginUserApp" operation="process"
+                inputVariable="Invoke2_Login_InputVariable" bpelx:invokeAsDetail="no"
+                outputVariable="Invoke2_Login_OutputVariable"/>
+        <if name="If_LoginResult">
+          <documentation>
+            <![CDATA[success]]>
+          </documentation>
+          <condition>$Invoke2_Login_OutputVariable.payload/ns4:Result='0'</condition>
+          <sequence name="If-true">
+            <empty name="Empty1"/>
+          </sequence>
+          <else>
+            <documentation>
+              <![CDATA[failed]]>
+            </documentation>
+            <assign name="failedLogin">
+              <copy>
+                <from>$Invoke2_Login_OutputVariable.payload/ns4:Result</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:Result</to>
+              </copy>
+              <copy>
+                <from>$Invoke2_Login_OutputVariable.payload/ns4:IdResult</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:IdResult</to>
+              </copy>
+              <copy>
+                <from>$Invoke2_Login_OutputVariable.payload/ns4:ResultDescription</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:Description</to>
+              </copy>
+            </assign>
+          </else>
+        </if>
+      </sequence>
+    </scope>
+    <scope name="ScpServicesProducts">
+      <sequence>
+        <assign name="InicializaArrs">
+          <copy>
+            <from>''</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:Result</to>
+          </copy>
+          <copy>
+            <from>''</from>
+            <to>$outputVariable.payload/client:ArrServiciosIncluidos/client:Id</to>
+          </copy>
+          <copy>
+            <from>''</from>
+            <to>$outputVariable.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:Id</to>
+          </copy>
+          <copy>
+            <from>''</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:Id</to>
+          </copy>
+          <copy>
+            <from>''</from>
+            <to>$outputVariable.payload/client:ArrServiciosAdicionales/client:Id</to>
+          </copy>
+          <copy>
+            <from>''</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ArrPromocionesPlan/client:Id</to>
+          </copy>
+          <copy>
+            <from>''</from>
+            <to>$outputVariable.payload/client:ArrProductosAdicionales/client:Id</to>
+          </copy>
+        </assign>
+        <sequence name="ArrServiciosIncluidos">
+          <assign name="AssgIdPlan">
+            <copy>
+              <from>string($inputVariable.payload/client:Info/client:IdPlan)</from>
+              <to>$Invoke1_ServsIncluidos_InputVariable.parameters/ns2:QueryParameters/ns6:PlanId__c</to>
+            </copy>
+            <copy>
+              <from>string($inputVariable.payload/client:Info/client:IdPlan)</from>
+              <to>$Invoke1_SAdicionales_InputVariable.parameters/ns5:QueryParameters/ns7:PlanId__c</to>
+            </copy>
+          </assign>
+          <invoke name="InkServsIncluidos" bpelx:invokeAsDetail="no" partnerLink="ServiciosIncluidos"
+                  portType="ns2:ServiciosIncluidosPortType" operation="query"
+                  inputVariable="Invoke1_ServsIncluidos_InputVariable"
+                  outputVariable="Invoke1_ServsIncluidos_OutputVariable"/>
+          <forEach parallel="no" counterName="SIncluidos" name="SIncluidos">
+            <bpelx:skipCondition>count($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records)&lt;1</bpelx:skipCondition>
+            <startCounterValue>1</startCounterValue>
+            <finalCounterValue>count($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records)</finalCounterValue>
+            <scope name="ScpSIncluidos">
+              <variables>
+                <variable name="AuxSIncluidos" messageType="client:PM_ServicesProductsResponseMessage"/>
+              </variables>
+              <sequence name="ArrProductosIncluidos">
+                <assign name="AssgAuxSIncluidos">
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:Id)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:Id</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:Name)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:Nombre</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:CantidadEquiposAutomaticos__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:CantidadEquiposAutomaticos</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:Comentario__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:Comentario</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:MaximoAgregar__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:MaximoAgregar</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:Nombrecomercial__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:Nombrecomercial</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:NombreEditable__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:NombreEditable</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:PlanId__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:PlanId</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:Precio__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:Precio</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:SeActiva__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:SeActiva</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:SeFactura__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:SeFactura</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:ServicioId__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:ServicioId</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:SRV_Mode__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:SRV_Mode</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:TipoServicio__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:TipoServicio</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:TipoTelefonia__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:TipoTelefonia</to>
+                  </copy>
+                  <copy>
+                    <from>''</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:Id</to>
+                  </copy>
+                </assign>
+                <assign name="AssgIdPlanServicio">
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:Id)</from>
+                    <to>$Invoke2_PIncluidos_InputVariable.parameters/ns1:QueryParameters/ns8:DP_PlanServicio__c</to>
+                  </copy>
+                </assign>
+                <invoke name="InkPIncluidosSIncludos" partnerLink="ProductosIncluidos"
+                        portType="ns1:ProductosIncluidosPortType" operation="query"
+                        inputVariable="Invoke2_PIncluidos_InputVariable"
+                        outputVariable="Invoke2_PIncluidos_OutputVariable" bpelx:invokeAsDetail="no"/>
+                <forEach parallel="no" counterName="PIncluidos" name="PIncluidos">
+                  <bpelx:skipCondition>count($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records)&lt;1</bpelx:skipCondition>
+                  <startCounterValue>1</startCounterValue>
+                  <finalCounterValue>count($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records)</finalCounterValue>
+                  <scope name="Scope3">
+                    <variables>
+                      <variable name="AuxPIncluidos" messageType="client:PM_ServicesProductsResponseMessage"/>
+                    </variables>
+                    <sequence>
+                      <assign name="AssgAuxPIncluidos">
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:Id)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:Id</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:Name)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:Nombre</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:AgrupacionAddon__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:AgrupacionAddon</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:CantidadDN__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:CantidadDN</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:CantidadTroncal__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:CantidadTroncal</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:Comentario__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:Comentario</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:EsAutomaticoCiudad__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:EsAutomaticoCiudad</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:EsCargoUnico__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:EsCargoUnico</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:Estatus__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:Estatus</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:EsVisible__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:EsVisible</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:IdBrmArrear__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:IdBrmArrear</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:IdBrmCU__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:IdBrmCU</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:IdBrmForward__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:IdBrmForward</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:IEPS__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:IEPS</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:IVA__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:IVA</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:MaximoAgregar__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:MaximoAgregar</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:NombreEditable__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:NombreEditable</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:PlanDescuentoId__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:PlanDescuentoId</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:Plazo__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:Plazo</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:PrecioBase__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:PrecioBase</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:PrecioEditable__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:PrecioEditable</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:PrecioProntoPago__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:PrecioProntoPago</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:ProductoPadre__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:ProductoPadre</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:TipoProducto__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:TipoProducto</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:Id)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:IdProducto</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:Name)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:NameProducto</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:ProductoId__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:ProductoId</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:Ciudad__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:Ciudad</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:VelocidadSubida__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:VelocidadSubida</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:VelocidadBajada__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:VelocidadBajada</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:TieneIPDinamica__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:TieneIPDinamica</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:TieneIPFija__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:TieneIPFija</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:TieneSTBAdicional__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:TieneSTBAdicional</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:EsCCTV__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:EsCCTV</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:EsWiFi__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:EsWiFi</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:Cantidad__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:Cantidad</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:Estatus__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:EstatusProducto</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:FechaInicio__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:FechaInicio</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:FechaFin__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:FechaFin</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:ProductoId__r/ns1:EsProntoPago__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:EsProntoPago</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke2_PIncluidos_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidos]/ns1:DP_ProductoCaracteristicaId__r/ns1:Comentario__c)</from>
+                          <to>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos/client:ComentarioProducto</to>
+                        </copy>
+                        <extensionAssignOperation>
+                          <bpelx:insertAfter>
+                            <bpelx:from>$AuxPIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos</bpelx:from>
+                            <bpelx:to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos</bpelx:to>
+                          </bpelx:insertAfter>
+                        </extensionAssignOperation>
+                      </assign>
+                    </sequence>
+                  </scope>
+                </forEach>
+                <assign name="AssgOutputArrSIncluidos">
+                  <extensionAssignOperation>
+                    <bpelx:remove>
+                      <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:ArrProductosIncluidos[1]</bpelx:target>
+                    </bpelx:remove>
+                  </extensionAssignOperation>
+                  <extensionAssignOperation>
+                    <bpelx:insertAfter>
+                      <bpelx:from>$AuxSIncluidos.payload/client:ArrServiciosIncluidos</bpelx:from>
+                      <bpelx:to>$outputVariable.payload/client:ArrServiciosIncluidos</bpelx:to>
+                    </bpelx:insertAfter>
+                  </extensionAssignOperation>
+                </assign>
+              </sequence>
+            </scope>
+          </forEach>
+        </sequence>
+        <sequence name="ArrServiciosAdicionales">
+          <assign name="AssgIdPlan">
+            <copy>
+              <from>string($inputVariable.payload/client:Info/client:IdPlan)</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke1_SAdicionales_InputVariable.parameters/ns5:QueryParameters/ns7:PlanId__c</to>
+            </copy>
+          </assign>
+          <invoke name="InvkSAdicionales" bpelx:invokeAsDetail="no" partnerLink="ServiciosAdicionales"
+                  portType="ns5:ServiciosAdicionalesPortType" operation="query"
+                  inputVariable="Invoke1_SAdicionales_InputVariable"
+                  outputVariable="Invoke1_SAdicionales_OutputVariable"/>
+          <forEach parallel="no" counterName="SAdicionales" name="SAdicionales">
+            <bpelx:skipCondition>count($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records)&lt;1</bpelx:skipCondition>
+            <startCounterValue>1</startCounterValue>
+            <finalCounterValue>count($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records)</finalCounterValue>
+            <scope name="PIncluidosSAdionales">
+              <variables>
+                <variable name="AuxSAdicionales" messageType="client:PM_ServicesProductsResponseMessage"/>
+              </variables>
+              <sequence name="Sequence9">
+                <assign name="AssgAuxSAdiconales">
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:Id)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:Id</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:Name)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:Nombre</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:CantidadEquiposAutomaticos__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:CantidadEquiposAutomaticos</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:Comentario__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:Comentario</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:MaximoAgregar__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:MaximoAgregar</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:Nombrecomercial__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:Nombrecomercial</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:NombreEditable__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:NombreEditable</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:PlanId__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:PlanId</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:Precio__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:Precio</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:SeActiva__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:SeActiva</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:SeFactura__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:SeFactura</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:ServicioId__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:ServicioId</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:SRV_Mode__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:SRV_Mode</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:TipoServicio__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:TipoServicio</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:TipoTelefonia__c)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:TipoTelefonia</to>
+                  </copy>
+                  <copy>
+                    <from>''</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:Id</to>
+                  </copy>
+                </assign>
+                <assign name="AssgIdPlanServicio">
+                  <copy>
+                    <from>string($Invoke1_SAdicionales_OutputVariable.parameters/ns5:QueryResults/ns5:records[$SAdicionales]/ns5:Id)</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke_PIncluidosSAdicionales_InputVariable.parameters/ns1:QueryParameters/ns8:DP_PlanServicio__c</to>
+                  </copy>
+                </assign>
+                <invoke name="InkPIncluidosSAdicionales" partnerLink="ProductosIncluidos"
+                        portType="ns1:ProductosIncluidosPortType" operation="query"
+                        inputVariable="Invoke_PIncluidosSAdicionales_InputVariable"
+                        outputVariable="Invoke_PIncluidosSAdicionales_OutputVariable" bpelx:invokeAsDetail="no"/>
+                <forEach parallel="no" counterName="PIncluidosSAdiconales" name="PIncluidosSAdiconales">
+                  <bpelx:skipCondition>count($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records)&lt;1</bpelx:skipCondition>
+                  <startCounterValue>1</startCounterValue>
+                  <finalCounterValue>count($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records)</finalCounterValue>
+                  <scope name="Scope11">
+                    <variables>
+                      <variable name="AuxPIncluidosSAdiconales"
+                                messageType="client:PM_ServicesProductsResponseMessage"/>
+                    </variables>
+                    <sequence name="Sequence10">
+                      <assign name="AssgPIncluidosAux">
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:Id)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:Id</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:Name)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:Nombre</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:AgrupacionAddon__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:AgrupacionAddon</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:CantidadDN__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:CantidadDN</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:CantidadTroncal__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:CantidadTroncal</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:Comentario__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:Comentario</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:EsAutomaticoCiudad__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:EsAutomaticoCiudad</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:EsCargoUnico__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:EsCargoUnico</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:Estatus__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:Estatus</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:EsVisible__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:EsVisible</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:IdBrmCU__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:IdBrmCU</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:IdBrmArrear__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:IdBrmArrear</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:IdBrmForward__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:IdBrmForward</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:IEPS__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:IEPS</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:IVA__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:IVA</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:MaximoAgregar__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:MaximoAgregar</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:NombreEditable__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:NombreEditable</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:PlanDescuentoId__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:PlanDescuentoId</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:Plazo__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:Plazo</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:PrecioBase__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:PrecioBase</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:PrecioEditable__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:PrecioEditable</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:PrecioProntoPago__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:PrecioProntoPago</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:ProductoPadre__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:ProductoPadre</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:TipoProducto__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:TipoProducto</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:Id)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:IdProducto</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:Name)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:NameProducto</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:ProductoId__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:ProductoId</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:Ciudad__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:Ciudad</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:VelocidadSubida__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:VelocidadSubida</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:VelocidadBajada__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:VelocidadBajada</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:TieneIPDinamica__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:TieneIPDinamica</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:TieneIPFija__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:TieneIPFija</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:TieneSTBAdicional__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:TieneSTBAdicional</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:EsCCTV__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:EsCCTV</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:EsWiFi__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:EsWiFi</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:Cantidad__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:Cantidad</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:Estatus__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:EstatusProducto</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:FechaInicio__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:FechaInicio</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:Comentario__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:ComentarioProducto</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:FechaFin__c)</from>
+                          <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:FechaFin</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke_PIncluidosSAdicionales_OutputVariable.parameters/ns1:QueryResults/ns1:records[$PIncluidosSAdiconales]/ns1:DP_ProductoCaracteristicaId__r/ns1:ProductoId__r/ns1:EsProntoPago__c)</from>
+                          <to>$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos/client:EsProntoPago</to>
+                        </copy>
+                        <extensionAssignOperation>
+                          <bpelx:insertAfter>
+                            <bpelx:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPIncluidosSAdiconales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos</bpelx:from>
+                            <bpelx:to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos</bpelx:to>
+                          </bpelx:insertAfter>
+                        </extensionAssignOperation>
+                      </assign>
+                    </sequence>
+                  </scope>
+                </forEach>
+                <assign name="AssgOutputSAdionales">
+                  <extensionAssignOperation>
+                    <bpelx:remove>
+                      <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales/client:ArrProductosIncluidos[1]</bpelx:target>
+                    </bpelx:remove>
+                  </extensionAssignOperation>
+                  <extensionAssignOperation>
+                    <bpelx:insertAfter>
+                      <bpelx:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxSAdicionales.payload/client:ArrServiciosAdicionales</bpelx:from>
+                      <bpelx:to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ArrServiciosAdicionales</bpelx:to>
+                    </bpelx:insertAfter>
+                  </extensionAssignOperation>
+                </assign>
+              </sequence>
+            </scope>
+          </forEach>
+        </sequence>
+        <scope name="ScpProductosAdicionales">
+          <sequence name="Sequence5">
+            <forEach parallel="no" counterName="SIncluidos" name="SIncluidos">
+              <bpelx:skipCondition>count($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records)&lt;1</bpelx:skipCondition>
+              <startCounterValue>1</startCounterValue>
+              <finalCounterValue>count($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records)</finalCounterValue>
+              <scope name="SIncluidos">
+                <sequence name="ArrProductosAdicionales">
+                  <assign name="AssgIdPlanServicio">
+                    <copy>
+                      <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:Id)</from>
+                      <to>$Invoke1_PAdicionales_InputVariable.parameters/ns3:QueryParameters/ns9:DP_PlanServicio__c</to>
+                    </copy>
+                  </assign>
+                  <invoke name="InvkPAdiconales" bpelx:invokeAsDetail="no" partnerLink="ProductoAdicionales"
+                          portType="ns3:ProductoAdicionalesPortType" operation="query"
+                          inputVariable="Invoke1_PAdicionales_InputVariable"
+                          outputVariable="Invoke1_PAdicionales_OutputVariable"/>
+                  <forEach parallel="no" counterName="PAdicionales" name="PAdicionales">
+                    <bpelx:skipCondition>count($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records)&lt;1</bpelx:skipCondition>
+                    <startCounterValue>1</startCounterValue>
+                    <finalCounterValue>count($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records)</finalCounterValue>
+                    <scope name="Scope7">
+                      <variables>
+                        <variable name="AuxPAdiconales" messageType="client:PM_ServicesProductsResponseMessage"/>
+                      </variables>
+                      <sequence name="Sequence16">
+                        <assign name="AssgAuxPAdicionales">
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:Id)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:Id</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:Name)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:Nombre</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:AgrupacionAddon__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:AgrupacionAddon</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:CantidadDN__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:CantidadDN</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:CantidadTroncal__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:CantidadTroncal</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:Comentario__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:Comentario</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:EsAutomaticoCiudad__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:EsAutomaticoCiudad</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:EsCargoUnico__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:EsCargoUnico</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:Estatus__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:Estatus</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:EsVisible__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:EsVisible</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:IdBrmArrear__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:IdBrmArrear</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:IdBrmCU__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:IdBrmCU</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:IdBrmForward__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:IdBrmForward</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:IEPS__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:IEPS</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:IVA__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:IVA</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:MaximoAgregar__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:MaximoAgregar</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:NombreEditable__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:NombreEditable</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:PlanDescuentoId__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:PlanDescuentoId</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:Plazo__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:Plazo</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:PrecioBase__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:PrecioBase</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:PrecioEditable__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:PrecioEditable</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:PrecioProntoPago__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:PrecioProntoPago</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:ProductoPadre__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:ProductoPadre</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:TipoProducto__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:TipoProducto</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:TipoProductoTexto__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:TipoProductoTexto</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:Id)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:IdProducto</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:Name)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:NameProducto</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:ProductoId__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:ProductoId</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:VelocidadSubida__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:VelocidadSubida</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:Cantidad__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:Cantidad</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:Ciudad__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:Ciudad</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:Estatus__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:EstatusProducto</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:FechaInicio__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:FechaInicio</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:FechaFin__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:FechaFin</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:Comentario__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:ComentarioProducto</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:VelocidadBajada__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:VelocidadBajada</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:TieneIPDinamica__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:TieneIPDinamica</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:TieneIPFija__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:TieneIPFija</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:TieneSTBAdicional__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:TieneSTBAdicional</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:EsCCTV__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:EsCCTV</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:EsWiFi__c)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:EsWiFi</to>
+                          </copy>
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:DP_ProductoCaracteristicaId__r/ns3:ProductoId__r/ns3:EsProntoPago__c)</from>
+                            <to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:EsProntoPago</to>
+                          </copy>
+                          <copy>
+                            <from>''</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia/client:Id</to>
+                          </copy>
+                        </assign>
+                        <assign name="AssgProductoId">
+                          <copy>
+                            <from>string($Invoke1_PAdicionales_OutputVariable.parameters/ns3:QueryResults/ns3:records[$PAdicionales]/ns3:Id)</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke_PConvivencia_InputVariable.parameters/ns21:QueryParameters/ns22:ProductoId__c</to>
+                          </copy>
+                        </assign>
+                        <invoke name="InvokePConvivencia" bpelx:invokeAsDetail="no" partnerLink="ProductoConvivencia"
+                                portType="ns21:ProductoConvivenciaPortType" operation="query"
+                                inputVariable="Invoke_PConvivencia_InputVariable"
+                                outputVariable="Invoke_PConvivencia_OutputVariable"/>
+                        <forEach parallel="no" counterName="PConvivencia" name="PConvivencia">
+                          <bpelx:skipCondition>count($Invoke_PConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records)&lt;1</bpelx:skipCondition>
+                          <startCounterValue>1</startCounterValue>
+                          <finalCounterValue>count($Invoke_PConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records)</finalCounterValue>
+                          <scope name="Scope15">
+                            <variables>
+                              <variable name="AuxPConvivencia" messageType="client:PM_ServicesProductsResponseMessage"/>
+                            </variables>
+                            <assign name="AssgAuxPConvivencia">
+                              <copy>
+                                <from>string($Invoke_PConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PConvivencia]/ns21:Id)</from>
+                                <to>$AuxPConvivencia.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia/client:Id</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PConvivencia]/ns21:Name)</from>
+                                <to>$AuxPConvivencia.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia/client:Name</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PConvivencia]/ns21:Comentario__c)</from>
+                                <to>$AuxPConvivencia.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia/client:Comentario</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PConvivencia]/ns21:Estatus__c)</from>
+                                <to>$AuxPConvivencia.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia/client:Estatus</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PConvivencia]/ns21:ProductoId__c)</from>
+                                <to>$AuxPConvivencia.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia/client:ProductoId</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PConvivencia]/ns21:Tipo__c)</from>
+                                <to>$AuxPConvivencia.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia/client:Tipo</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PConvivencia]/ns21:ProductoExcIncId__c)</from>
+                                <to>$AuxPConvivencia.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia/client:ProductoExcIncId</to>
+                              </copy>
+                              <extensionAssignOperation>
+                                <bpelx:insertAfter>
+                                  <bpelx:from>$AuxPConvivencia.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia</bpelx:from>
+                                  <bpelx:to>$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia</bpelx:to>
+                                </bpelx:insertAfter>
+                              </extensionAssignOperation>
+                            </assign>
+                          </scope>
+                        </forEach>
+                        <assign name="AssgOutPAdicionales">
+                          <extensionAssignOperation>
+                            <bpelx:remove>
+                              <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPAdiconales.payload/client:ArrProductosAdicionales/client:ArrProductosConvivencia[1]</bpelx:target>
+                            </bpelx:remove>
+                          </extensionAssignOperation>
+                          <extensionAssignOperation>
+                            <bpelx:insertAfter>
+                              <bpelx:from>$AuxPAdiconales.payload/client:ArrProductosAdicionales</bpelx:from>
+                              <bpelx:to>$outputVariable.payload/client:ArrProductosAdicionales</bpelx:to>
+                            </bpelx:insertAfter>
+                          </extensionAssignOperation>
+                        </assign>
+                      </sequence>
+                    </scope>
+                  </forEach>
+                </sequence>
+              </scope>
+            </forEach>
+          </sequence>
+        </scope>
+        <scope name="ScpPromociones">
+          <sequence name="ArrPromociones">
+            <assign name="AssgIdPlan">
+              <copy>
+                <from>string($inputVariable.payload/client:Info/client:IdPlan)</from>
+                <to>$Invoke1_Promociones_InputVariable.parameters/ns10:QueryParameters/ns11:DP_Plan__c</to>
+              </copy>
+            </assign>
+            <invoke name="InkPromociones" bpelx:invokeAsDetail="no" partnerLink="Promociones"
+                    portType="ns10:PromocionesPortType" operation="query"
+                    inputVariable="Invoke1_Promociones_InputVariable"
+                    outputVariable="Invoke1_Promociones_OutputVariable"/>
+            <forEach parallel="no" counterName="Promociones" name="Promociones">
+              <bpelx:skipCondition>count($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records)&lt;1</bpelx:skipCondition>
+              <startCounterValue>1</startCounterValue>
+              <finalCounterValue>count($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records)</finalCounterValue>
+              <scope name="Scope10">
+                <variables>
+                  <variable name="AuxPromociones" messageType="client:PM_ServicesProductsResponseMessage"/>
+                </variables>
+                <sequence name="Sequence11">
+                  <assign name="AssgPromos">
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:Id)</from>
+                      <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:Id</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:Name)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:Nombre</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:Comentario__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:Comentario</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:Descripcion__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:Descripcion</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Plan__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:Plan</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Plan_CambioParrilla__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:PlanCambioParrilla</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:Promocion</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:Estatus__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:Estatus</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:Plazo__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:Plazo</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:Estatus__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:EstatusPromociones</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:Name)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:NombrePromocion</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:Comentario__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:ComentarioPromocion</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:CompaniaId__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:CompaniaId</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:EsAutomatica__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:EsAutomatica</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:EsPostVenta__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:EsPostVenta</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:EsVentaNueva__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:EsVentaNueva</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:FechaInicio__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:FechaInicio</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:FechaFin__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:FechaFin</to>
+                    </copy>
+                    <copy>
+                      <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__r/ns10:IdPromocion__c)</from>
+                      <to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:IdPromocion</to>
+                    </copy>
+                    <copy>
+                      <from>''</from>
+                      <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia/client:Id</to>
+                    </copy>
+                    <copy>
+                      <from>''</from>
+                      <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:Id</to>
+                    </copy>
+                    <copy>
+                      <from>''</from>
+                      <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:Id</to>
+                    </copy>
+                  </assign>
+                  <scope name="ScpPromoConvivencia">
+                    <sequence>
+                      <assign name="AssgIdPromoPlan">
+                        <copy>
+                          <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:Id)</from>
+                          <to>$Invoke_PromoConvivencia_InputVariable.parameters/ns13:QueryParameters/ns16:PromocionPlanId__c</to>
+                        </copy>
+                      </assign>
+                      <invoke name="InkPromoConvivencia" bpelx:invokeAsDetail="no" partnerLink="PromocionesConvivencia"
+                              portType="ns13:PromocionesConvivenciaPortType" operation="query"
+                              inputVariable="Invoke_PromoConvivencia_InputVariable"
+                              outputVariable="Invoke_PromoConvivencia_OutputVariable"/>
+                      <forEach parallel="no" counterName="PromocionesConvivencia" name="PromocionesConvivencia">
+                        <bpelx:skipCondition>count($Invoke_PromoConvivencia_OutputVariable.parameters/ns13:QueryResults/ns13:records)&lt;1</bpelx:skipCondition>
+                        <startCounterValue>1</startCounterValue>
+                        <finalCounterValue>count($Invoke_PromoConvivencia_OutputVariable.parameters/ns13:QueryResults/ns13:records)</finalCounterValue>
+                        <scope name="Scope12">
+                          <variables>
+                            <variable name="AuxPromoConvivencia"
+                                      messageType="client:PM_ServicesProductsResponseMessage"/>
+                          </variables>
+                          <assign name="AssgPromoConvivencia">
+                            <copy>
+                              <from>string($Invoke_PromoConvivencia_OutputVariable.parameters/ns13:QueryResults/ns13:records[$PromocionesConvivencia]/ns13:Name)</from>
+                              <to>$AuxPromoConvivencia.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia/client:Nombre</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoConvivencia_OutputVariable.parameters/ns13:QueryResults/ns13:records[$PromocionesConvivencia]/ns13:Estatus__c)</from>
+                              <to>$AuxPromoConvivencia.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia/client:Estatus</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoConvivencia_OutputVariable.parameters/ns13:QueryResults/ns13:records[$PromocionesConvivencia]/ns13:Id)</from>
+                              <to>$AuxPromoConvivencia.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia/client:Id</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoConvivencia_OutputVariable.parameters/ns13:QueryResults/ns13:records[$PromocionesConvivencia]/ns13:PromocionPlanId__c)</from>
+                              <to>$AuxPromoConvivencia.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia/client:PromocionPlanId</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoConvivencia_OutputVariable.parameters/ns13:QueryResults/ns13:records[$PromocionesConvivencia]/ns13:PromocionExcId__c)</from>
+                              <to>$AuxPromoConvivencia.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia/client:PromocionExcId</to>
+                            </copy>
+                            <extensionAssignOperation>
+                              <bpelx:insertAfter>
+                                <bpelx:from>$AuxPromoConvivencia.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia</bpelx:from>
+                                <bpelx:to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia</bpelx:to>
+                              </bpelx:insertAfter>
+                            </extensionAssignOperation>
+                          </assign>
+                        </scope>
+                      </forEach>
+                    </sequence>
+                  </scope>
+                  <scope name="ScpPromoDetalles">
+                    <sequence>
+                      <assign name="AssgDP_Promo">
+                        <copy>
+                          <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:DP_Promocion__c)</from>
+                          <to>$Invoke_PromoDetalles_InputVariable.parameters/ns14:QueryParameters/ns18:DP_Promocion__c</to>
+                        </copy>
+                      </assign>
+                      <invoke name="InkPromoDetalles" bpelx:invokeAsDetail="no" partnerLink="PromocionesDetalle"
+                              portType="ns14:PromocionesDetallePortType" operation="query"
+                              inputVariable="Invoke_PromoDetalles_InputVariable"
+                              outputVariable="Invoke_PromoDetalles_OutputVariable"/>
+                      <forEach parallel="no" counterName="PromocionDetalle" name="PromocionDetalle">
+                        <bpelx:skipCondition>count($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records)&lt;1</bpelx:skipCondition>
+                        <startCounterValue>1</startCounterValue>
+                        <finalCounterValue>count($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records)</finalCounterValue>
+                        <scope name="Scope13">
+                          <variables>
+                            <variable name="AuxPromoDetalle" messageType="client:PM_ServicesProductsResponseMessage"/>
+                          </variables>
+                          <assign name="AssgPromoDetalles">
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:Id)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:Id</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:Name)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:Nombre</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:CAT_CanalVenta__c)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:CAT_CanalVenta</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:CAT_Ciudad__c)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:CAT_Ciudad</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:CAT_Cluster__c)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:CAT_Cluster</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:CAT_Plazo__c)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:CAT_Plazo</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:CodigoPostal__c)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:CodigoPostal</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:CAT_TipoPago__c)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:CAT_TipoPago</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:DP_Promocion__c)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:DP_Promocion</to>
+                            </copy>
+                            <copy>
+                              <from>string($Invoke_PromoDetalles_OutputVariable.parameters/ns14:QueryResults/ns14:records[$PromocionDetalle]/ns14:Estatus__c)</from>
+                              <to>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle/client:Estatus</to>
+                            </copy>
+                            <extensionAssignOperation>
+                              <bpelx:insertAfter>
+                                <bpelx:from>$AuxPromoDetalle.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle</bpelx:from>
+                                <bpelx:to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle</bpelx:to>
+                              </bpelx:insertAfter>
+                            </extensionAssignOperation>
+                          </assign>
+                        </scope>
+                      </forEach>
+                    </sequence>
+                  </scope>
+                  <scope name="ScpPromoServicoProducto">
+                    <sequence>
+                      <assign name="AssgIdPromoPlan">
+                        <copy>
+                          <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:Id)</from>
+                          <to>$Invoke_PromoServProd_InputVariable.parameters/ns15:QueryParameters/ns17:DP_PromocionPlan__c</to>
+                        </copy>
+                        <copy>
+                          <from>string($Invoke1_Promociones_OutputVariable.parameters/ns10:QueryResults/ns10:records[$Promociones]/ns10:Id)</from>
+                          <to>$Invoke_PSPServicioProduct_InputVariable.parameters/ns19:QueryParameters/ns20:DP_PromocionPlan__c</to>
+                        </copy>
+                      </assign>
+                      <invoke name="InkPromoServProd" partnerLink="PromocionesServicioProducto"
+                              portType="ns15:PromocionesServicioProductoPortType" operation="query"
+                              inputVariable="Invoke_PromoServProd_InputVariable"
+                              outputVariable="Invoke_PromoServProd_OutputVariable" bpelx:invokeAsDetail="no"/>
+                      <invoke name="InkPSPServicioProd" bpelx:invokeAsDetail="no" partnerLink="PSP_ServicioP_ProdC"
+                              portType="ns19:PSP_ServicioP_ProdCPortType" operation="query"
+                              inputVariable="Invoke_PSPServicioProduct_InputVariable"
+                              outputVariable="Invoke_PSPServicioProduct_OutputVariable"/>
+                      <forEach parallel="no" counterName="PromocionesServProd" name="PromocionesServProd">
+                        <bpelx:skipCondition>count($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records)&lt;1</bpelx:skipCondition>
+                        <startCounterValue>1</startCounterValue>
+                        <finalCounterValue>count($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records)</finalCounterValue>
+                        <scope name="ScpPromoServicioProd">
+                          <variables>
+                            <variable name="AuxPromoServProd" messageType="client:PM_ServicesProductsResponseMessage"/>
+                          </variables>
+                          <sequence name="Sequence12">
+                            <assign name="AssgAuxPromoServProd">
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:Name)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:Nombre</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:AgregarServicio__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:AgregarServicio</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:EsCargoUnico__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:EsCargoUnico</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:Estatus__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:Estatus</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:IEPS__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:IEPS</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:IVA__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:IVA</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:MesInicio__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:MesInicio</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:Monto__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:Monto__c</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_PlanServicio__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:PlanServicio</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:Porcentaje__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:Porcentaje</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:ProductoCaracteristica</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ServicioProducto__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:ServicioProducto</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_PromocionPlan__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:PromocionPlan</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:VigenciaMes__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:VigenciaMes</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:Id)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:IdProductoC</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:Name)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:NameProductoC</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:ProductoId__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:ProductoId</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:Ciudad__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:Ciudad</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:VelocidadSubida__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:VelocidadSubida</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:VelocidadBajada__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:VelocidadBajada</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:TieneIPDinamica__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:TieneIPDinamica</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:TieneIPFija__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:TieneIPFija</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:TieneSTBAdicional__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:TieneSTBAdicional</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:EsCCTV__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:EsCCTV</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:EsWiFi__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:EsWiFi</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:Cantidad__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:Cantidad</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:Estatus__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:EstatusProductoC</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:FechaInicio__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:FechaInicio</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:FechaFin__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:FechaFin</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:Comentario__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:Comentario</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:DP_ProductoCaracteristica__r/ns15:ProductoId__r/ns15:EsProntoPago__c)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:EsProntoPago</to>
+                              </copy>
+                              <copy>
+                                <from>string($Invoke_PromoServProd_OutputVariable.parameters/ns15:QueryResults/ns15:records[$PromocionesServProd]/ns15:Id)</from>
+                                <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:Id</to>
+                              </copy>
+                            </assign>
+                            <if name="IfDP_ServicioProducto">
+                              <documentation>
+                                <![CDATA[true]]>
+                              </documentation>
+                              <condition>string-length(string($AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:ServicioProducto)) &gt; 0</condition>
+                              <sequence>
+                                <assign name="AssgAuxPSPServicioProd">
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:Id)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:IdPromocionSP</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:NombreEditable__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:NombreEditable</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:Id)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:Id</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:Name)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:Nombre</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:AgrupacionAddon__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:AgrupacionAddon</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:CantidadDN__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:CantidadDN</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:CantidadTroncal__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:CantidadTroncal</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:Comentario__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:Comentario</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:EsAutomaticoCiudad__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:EsAutomaticoCiudad</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:EsCargoUnico__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:EsCargoUnico</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:Estatus__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:Estatus</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:EsVisible__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:EsVisible</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:IdBrmArrear__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:IdBrmArrear</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:IdBrmCU__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:IdBrmCU</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:IdBrmForward__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:IdBrmForward</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:IEPS__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:IEPS</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:MaximoAgregar__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:MaximoAgregar</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:PlanDescuentoId__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:PlanDescuentoId</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:Plazo__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:Plazo</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:PrecioBase__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:PrecioBase</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:PrecioEditable__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:PrecioEditable</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:PrecioProntoPago__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:PrecioProntoPago</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:ProductoPadre__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ProductoPadre</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:TipoProductoTexto__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:TipoProductoTexto</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:TipoProducto__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:TipoProducto</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:Id)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:IdProducto</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:Name)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:NameProducto</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:ProductoId__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ProductoId</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:Ciudad__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:Ciudad</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:VelocidadSubida__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:VelocidadSubida</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:VelocidadBajada__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:VelocidadBajada</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:TieneIPDinamica__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:TieneIPDinamica</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:TieneIPFija__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:TieneIPFija</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:TieneSTBAdicional__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:TieneSTBAdicional</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:EsCCTV__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:EsCCTV</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:EsWiFi__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:EsWiFi</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:Cantidad__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:Cantidad</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:Estatus__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:EstatusProducto</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:FechaInicio__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:FechaInicio</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:FechaFin__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:FechaFin</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:Comentario__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ComentarioProducto</to>
+                                  </copy>
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records[$PromocionesServProd]/ns19:DP_ServicioProducto__r/ns19:DP_ProductoCaracteristicaId__r/ns19:ProductoId__r/ns19:EsProntoPago__c)</from>
+                                    <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:EsProntoPago</to>
+                                  </copy>
+                                </assign>
+                                <assign name="AssgProductoId">
+                                  <copy>
+                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records/ns19:Id)</from>
+                                    <to>$Invoke_PromoPConvivencia_InputVariable.parameters/ns21:QueryParameters/ns22:ProductoId__c</to>
+                                  </copy>
+                                </assign>
+                                <invoke name="InkPromoPConvivencia" bpelx:invokeAsDetail="no"
+                                        partnerLink="ProductoConvivencia" portType="ns21:ProductoConvivenciaPortType"
+                                        operation="query" inputVariable="Invoke_PromoPConvivencia_InputVariable"
+                                        outputVariable="Invoke_PromoPConvivencia_OutputVariable"/>
+                                <forEach parallel="no" counterName="PromoPConvivencia" name="PromoPConvivencia">
+                                  <bpelx:skipCondition>count($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records)&gt;1</bpelx:skipCondition>
+                                  <startCounterValue>1</startCounterValue>
+                                  <finalCounterValue>count($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records)</finalCounterValue>
+                                  <scope name="Scope16">
+                                    <variables>
+                                      <variable name="AuxPromoPConvivencia"
+                                                messageType="client:PM_ServicesProductsResponseMessage"/>
+                                    </variables>
+                                    <assign name="AssgAuxPromoPConvivencia">
+                                      <copy>
+                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Id)</from>
+                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Id</to>
+                                      </copy>
+                                      <copy>
+                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Name)</from>
+                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Name</to>
+                                      </copy>
+                                      <copy>
+                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Comentario__c)</from>
+                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Comentario</to>
+                                      </copy>
+                                      <copy>
+                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Estatus__c)</from>
+                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Estatus</to>
+                                      </copy>
+                                      <copy>
+                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:ProductoId__c)</from>
+                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:ProductoId</to>
+                                      </copy>
+                                      <copy>
+                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:ProductoExcIncId__c)</from>
+                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:ProductoExcIncId</to>
+                                      </copy>
+                                      <copy>
+                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Tipo__c)</from>
+                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Tipo</to>
+                                      </copy>
+                                      <extensionAssignOperation>
+                                        <bpelx:insertAfter>
+                                          <bpelx:from>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia</bpelx:from>
+                                          <bpelx:to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia</bpelx:to>
+                                        </bpelx:insertAfter>
+                                      </extensionAssignOperation>
+                                    </assign>
+                                  </scope>
+                                </forEach>
+                                <assign name="AssAuxPromoServProd">
+                                  <extensionAssignOperation>
+                                    <bpelx:insertAfter>
+                                      <bpelx:from>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto</bpelx:from>
+                                      <bpelx:to>$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto</bpelx:to>
+                                    </bpelx:insertAfter>
+                                  </extensionAssignOperation>
+                                </assign>
+                              </sequence>
+                              <else>
+                                <documentation>
+                                  <![CDATA[false]]>
+                                </documentation>
+                                <sequence name="Sequence15">
+                                  <assign name="AssgDP_ServProdNull">
+                                    <extensionAssignOperation>
+                                      <bpelx:insertAfter>
+                                        <bpelx:from expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto</bpelx:from>
+                                        <bpelx:to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto</bpelx:to>
+                                      </bpelx:insertAfter>
+                                    </extensionAssignOperation>
+                                    <extensionAssignOperation>
+                                      <bpelx:remove>
+                                        <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto</bpelx:target>
+                                      </bpelx:remove>
+                                    </extensionAssignOperation>
+                                  </assign>
+                                </sequence>
+                              </else>
+                            </if>
+                          </sequence>
+                        </scope>
+                      </forEach>
+                    </sequence>
+                  </scope>
+                  <assign name="AssgPromoOutput">
+                    <extensionAssignOperation>
+                      <bpelx:remove>
+                        <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia[1]</bpelx:target>
+                      </bpelx:remove>
+                    </extensionAssignOperation>
+                    <extensionAssignOperation>
+                      <bpelx:remove>
+                        <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle[1]</bpelx:target>
+                      </bpelx:remove>
+                    </extensionAssignOperation>
+                    <extensionAssignOperation>
+                      <bpelx:remove>
+                        <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto[1]</bpelx:target>
+                      </bpelx:remove>
+                    </extensionAssignOperation>
+                    <extensionAssignOperation>
+                      <bpelx:insertAfter>
+                        <bpelx:from>$AuxPromociones.payload/client:ArrPromocionesPlan</bpelx:from>
+                        <bpelx:to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ArrPromocionesPlan</bpelx:to>
+                      </bpelx:insertAfter>
+                    </extensionAssignOperation>
+                  </assign>
+                </sequence>
+              </scope>
+            </forEach>
+          </sequence>
+        </scope>
+        <assign name="RemoveArrs">
+          <copy>
+            <from>'Successful operation'</from>
+            <to>$outputVariable.payload/client:Result/client:Description</to>
+          </copy>
+          <copy>
+            <from>'0'</from>
+            <to>$outputVariable.payload/client:Result/client:Result</to>
+          </copy>
+          <copy>
+            <from>'0'</from>
+            <to>$outputVariable.payload/client:Result/client:IdResult</to>
+          </copy>
+          <extensionAssignOperation>
+            <bpelx:remove>
+              <bpelx:target>$outputVariable.payload/client:ArrServiciosIncluidos[1]</bpelx:target>
+            </bpelx:remove>
+          </extensionAssignOperation>
+          <extensionAssignOperation>
+            <bpelx:remove>
+              <bpelx:target>$outputVariable.payload/client:ArrServiciosAdicionales[1]</bpelx:target>
+            </bpelx:remove>
+          </extensionAssignOperation>
+          <extensionAssignOperation>
+            <bpelx:remove>
+              <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ArrProductosAdicionales[1]</bpelx:target>
+            </bpelx:remove>
+          </extensionAssignOperation>
+          <extensionAssignOperation>
+            <bpelx:remove>
+              <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ArrPromocionesPlan[1]</bpelx:target>
+            </bpelx:remove>
+          </extensionAssignOperation>
+        </assign>
+      </sequence>
+    </scope>
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="pm_servicesproducts_client" portType="client:PM_ServicesProducts" operation="process" variable="outputVariable"/>
+  </sequence>
+</process>

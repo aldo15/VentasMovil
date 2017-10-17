@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="PromocionesPortType" adapter="salesforce" wsdlLocation="../WSDLs/Promociones.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="cloud/CloudAdapter">
+      <non-managed-connection managedConnectionFactoryClassName="oracle.cloud.connector.salesforce.SalesforceConnectionFactory">
+         <property name="targetWSDLURL" value="../WSDLs/enterpriseQA3.0.wsdl"/>
+         <property name="csfkey" value="keySalesforceQA"/>
+         <property name="csfMap" value="SOA"/>
+         <property name="applicationVersion" value="37.0"/>
+      </non-managed-connection>
+   </connection-factory>
+   <endpoint-interaction portType="PromocionesPortType" operation="query">
+      <interaction-spec className="oracle.tip.adapter.cloud.CloudInteractionSpec">
+         <property name="targetOperation" value="query"/>
+         <property name="operationPath" value=""/>
+         <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/Promociones#new"/>
+         <property name="selectedObjects" value="DP_PromocionPlan__c,QueryParameters"/>
+         <property name="oracle.cloud.rt.queryString" value="SELECT Id, Name,Comentario__c,Descripcion__c, DP_Plan__c,DP_Plan_CambioParrilla__c, DP_Promocion__c, Estatus__c, Plazo__c,DP_Promocion__r.Comentario__c,DP_Promocion__r.Name,DP_Promocion__r.CompaniaId__c, DP_Promocion__r.EsAutomatica__c, DP_Promocion__r.EsPostVenta__c, DP_Promocion__r.Estatus__c, DP_Promocion__r.EsVentaNueva__c, DP_Promocion__r.FechaFin__c, DP_Promocion__r.FechaInicio__c, DP_Promocion__r.IdPromocion__c FROM DP_PromocionPlan__c WHERE  DP_Plan__c = '&amp;DP_Plan__c' and Estatus__c = 'Activo' and DP_Promocion__r.Estatus__c = 'Activo'"/>
+         <property name="oracle.cloud.rt.suppressResponse" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

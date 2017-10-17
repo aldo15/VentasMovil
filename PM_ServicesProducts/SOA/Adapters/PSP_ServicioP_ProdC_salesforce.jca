@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="PSP_ServicioP_ProdCPortType" adapter="salesforce" wsdlLocation="../WSDLs/PSP_ServicioP_ProdC.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="cloud/CloudAdapter">
+      <non-managed-connection managedConnectionFactoryClassName="oracle.cloud.connector.salesforce.SalesforceConnectionFactory">
+         <property name="targetWSDLURL" value="../WSDLs/enterpriseQA3.0.wsdl"/>
+         <property name="csfkey" value="keySalesforceQA"/>
+         <property name="csfMap" value="SOA"/>
+         <property name="applicationVersion" value="37.0"/>
+      </non-managed-connection>
+   </connection-factory>
+   <endpoint-interaction portType="PSP_ServicioP_ProdCPortType" operation="query">
+      <interaction-spec className="oracle.tip.adapter.cloud.CloudInteractionSpec">
+         <property name="targetOperation" value="query"/>
+         <property name="operationPath" value=""/>
+         <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PSP_ServicioP_ProdC#new"/>
+         <property name="selectedObjects" value="DP_PromocionServicioProducto__c,QueryParameters"/>
+         <property name="oracle.cloud.rt.queryString" value="SELECT  Id, DP_ServicioProducto__r.Id,  DP_ServicioProducto__r.Name,  DP_ServicioProducto__r.AgrupacionAddon__c,  DP_ServicioProducto__r.CantidadDN__c,  DP_ServicioProducto__r.CantidadTroncal__c,  DP_ServicioProducto__r.Comentario__c,  DP_ServicioProducto__r.EsAutomaticoCiudad__c,  DP_ServicioProducto__r.EsCargoUnico__c,  DP_ServicioProducto__r.Estatus__c,  DP_ServicioProducto__r.EsVisible__c,  DP_ServicioProducto__r.IdBrmArrear__c,  DP_ServicioProducto__r.IdBrmCU__c,  DP_ServicioProducto__r.IdBrmForward__c,  DP_ServicioProducto__r.IEPS__c,  DP_ServicioProducto__r.MaximoAgregar__c,  DP_ServicioProducto__r.NombreEditable__c,  DP_ServicioProducto__r.PlanDescuentoId__c,  DP_ServicioProducto__r.Plazo__c,   DP_ServicioProducto__r.PrecioBase__c,  DP_ServicioProducto__r.PrecioEditable__c,  DP_ServicioProducto__r.PrecioProntoPago__c,  DP_ServicioProducto__r.ProductoPadre__c,  DP_ServicioProducto__r.TipoProducto__c,  DP_ServicioProducto__r.TipoProductoTexto__c, DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.Id, DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.Name,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.ProductoId__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.TipoProducto__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.Ciudad__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.VelocidadSubida__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.VelocidadBajada__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.TieneIPDinamica__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.TieneIPFija__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.TieneSTBAdicional__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.EsCCTV__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.EsWiFi__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.Cantidad__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.Estatus__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.FechaInicio__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.FechaFin__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.Comentario__c,  DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.ProductoId__r.EsProntoPago__c  FROM DP_PromocionServicioProducto__c WHERE DP_PromocionPlan__c = '&amp;DP_PromocionPlan__c' and DP_ServicioProducto__r.Estatus__c = 'Activo' and DP_ServicioProducto__r.DP_ProductoCaracteristicaId__r.Estatus__c = 'Activo' and Estatus__c = 'Activo'"/>
+         <property name="oracle.cloud.rt.suppressResponse" value="false"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>
