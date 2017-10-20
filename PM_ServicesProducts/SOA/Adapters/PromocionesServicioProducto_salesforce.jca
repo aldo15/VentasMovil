@@ -1,21 +1,20 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <adapter-config name="PromocionesServicioProductoPortType" adapter="salesforce" wsdlLocation="../WSDLs/PromocionesServicioProducto.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
-   <connection-factory location="cloud/CloudAdapter">
-      <non-managed-connection managedConnectionFactoryClassName="oracle.cloud.connector.salesforce.SalesforceConnectionFactory">
-         <property name="targetWSDLURL" value="../WSDLs/enterpriseQA3.0.wsdl"/>
-         <property name="csfkey" value="keySalesforceQA"/>
-         <property name="csfMap" value="SOA"/>
-         <property name="applicationVersion" value="37.0"/>
-      </non-managed-connection>
-   </connection-factory>
-   <endpoint-interaction portType="PromocionesServicioProductoPortType" operation="query">
-      <interaction-spec className="oracle.tip.adapter.cloud.CloudInteractionSpec">
-         <property name="targetOperation" value="query"/>
-         <property name="operationPath" value=""/>
-         <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesServicioProducto#new"/>
-         <property name="selectedObjects" value="DP_PromocionServicioProducto__c,QueryParameters"/>
-         <property name="oracle.cloud.rt.queryString" value="SELECT  Id,  Name,  AgregarServicio__c,  EsCargoUnico__c,  Estatus__c,  IEPS__c,  IVA__c,  MesInicio__c,  Monto__c,  DP_PlanServicio__c,  Porcentaje__c,  DP_ProductoCaracteristica__c,  DP_PromocionPlan__c,  DP_ServicioProducto__c,  VigenciaMes__c,  DP_ProductoCaracteristica__r.Id,  DP_ProductoCaracteristica__r.Name,  DP_ProductoCaracteristica__r.ProductoId__c,  DP_ProductoCaracteristica__r.TipoProducto__c,  DP_ProductoCaracteristica__r.Ciudad__c,  DP_ProductoCaracteristica__r.VelocidadSubida__c,  DP_ProductoCaracteristica__r.VelocidadBajada__c,  DP_ProductoCaracteristica__r.TieneIPDinamica__c,  DP_ProductoCaracteristica__r.TieneIPFija__c,  DP_ProductoCaracteristica__r.TieneSTBAdicional__c,  DP_ProductoCaracteristica__r.EsCCTV__c,  DP_ProductoCaracteristica__r.EsWiFi__c,  DP_ProductoCaracteristica__r.Cantidad__c,  DP_ProductoCaracteristica__r.Estatus__c,  DP_ProductoCaracteristica__r.FechaInicio__c,  DP_ProductoCaracteristica__r.FechaFin__c,  DP_ProductoCaracteristica__r.Comentario__c,  DP_ProductoCaracteristica__r.ProductoId__r.EsProntoPago__c  FROM DP_PromocionServicioProducto__c  WHERE DP_PromocionPlan__c = '&amp;DP_PromocionPlan__c' and Estatus__c = 'Activo' and DP_ProductoCaracteristica__r.Estatus__c = 'Activo'"/>
-         <property name="oracle.cloud.rt.suppressResponse" value="false"/>
-      </interaction-spec>
-   </endpoint-interaction>
+  <connection-factory location="cloud/CloudAdapter">
+    <non-managed-connection managedConnectionFactoryClassName="oracle.cloud.connector.salesforce.SalesforceConnectionFactory">
+      <property name="targetWSDLURL" value="../WSDLs/enterpriseQA18.0.wsdl"/>
+      <property name="csfkey" value="keySalesforceQA"/>
+      <property name="csfMap" value="SOA"/>
+      <property name="applicationVersion" value="41.0"/>
+    </non-managed-connection>
+  </connection-factory>
+  <endpoint-interaction portType="PromocionesServicioProductoPortType" operation="query">
+    <interaction-spec className="oracle.tip.adapter.cloud.CloudInteractionSpec">
+      <property name="targetOperation" value="query"/>
+      <property name="operationPath" value=""/>
+      <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesServicioProducto#new"/>
+      <property name="selectedObjects" value="DP_PromocionServicioProducto__c,QueryParameters"/>
+      <property name="oracle.cloud.rt.queryString" value="SELECT  Id,  Name,  AgregarServicio__c,  EsCargoUnico__c,  Estatus__c,  IEPS__c,  IVA__c,  MesInicio__c,  Monto__c,  DP_PlanServicio__c,  Porcentaje__c,  DP_ProductoCaracteristica__c,  DP_PromocionPlan__c,  DP_ServicioProducto__c,  VigenciaMes__c,  DP_ProductoCaracteristica__r.Id,  DP_ProductoCaracteristica__r.Name,  DP_ProductoCaracteristica__r.ProductoId__c,  DP_ProductoCaracteristica__r.TipoProducto__c,  DP_ProductoCaracteristica__r.Ciudad__c,  DP_ProductoCaracteristica__r.VelocidadSubida__c,  DP_ProductoCaracteristica__r.VelocidadBajada__c,  DP_ProductoCaracteristica__r.TieneIPDinamica__c,  DP_ProductoCaracteristica__r.TieneIPFija__c,  DP_ProductoCaracteristica__r.TieneSTBAdicional__c,  DP_ProductoCaracteristica__r.EsCCTV__c,  DP_ProductoCaracteristica__r.EsWiFi__c,  DP_ProductoCaracteristica__r.Cantidad__c,  DP_ProductoCaracteristica__r.Estatus__c,  DP_ProductoCaracteristica__r.FechaInicio__c,  DP_ProductoCaracteristica__r.FechaFin__c,  DP_ProductoCaracteristica__r.Comentario__c,  DP_ProductoCaracteristica__r.ProductoId__r.EsProntoPago__c  FROM DP_PromocionServicioProducto__c  WHERE DP_PromocionPlan__c = '&amp;DP_PromocionPlan__c' and Estatus__c = 'Activo' and DP_ProductoCaracteristica__r.Estatus__c = 'Activo'"/>
+      <property name="oracle.cloud.rt.suppressResponse" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
 </adapter-config>

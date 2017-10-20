@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<composite name="PM_ServicesProducts" revision="1.6" label="2016-07-20_12-04-32_055" mode="active" state="on" xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:orawsp="http://schemas.oracle.com/ws/2006/01/policy" xmlns:ui="http://xmlns.oracle.com/soa/designer/" xmlns:sca-ext="http://xmlns.oracle.com/sca/1.0-ext">
+<composite name="PM_ServicesProducts" revision="1.7" label="2016-07-20_12-04-32_055" mode="active" state="on" xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:orawsp="http://schemas.oracle.com/ws/2006/01/policy" xmlns:ui="http://xmlns.oracle.com/soa/designer/" xmlns:sca-ext="http://xmlns.oracle.com/sca/1.0-ext">
    <import namespace="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts" location="WSDLs/PM_ServicesProducts.wsdl" importType="wsdl"/>
    <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosIncluidos" location="WSDLs/ServiciosIncluidos.wsdl" importType="wsdl"/>
    <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductosIncluidos" location="WSDLs/ProductosIncluidos.wsdl" importType="wsdl"/>
@@ -7,19 +7,20 @@
    <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales" location="WSDLs/ServiciosAdicionales.wsdl" importType="wsdl"/>
    <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/Promociones" location="WSDLs/Promociones.wsdl" importType="wsdl"/>
    <import namespace="http://xmlns.oracle.com/SeguridadBRM/LoginUserApp/BPELLoginUserApp" location="http://soabalanceada/soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/BPELLoginUserApp.wsdl" importType="wsdl"/>
-   <import namespace="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/RestService" location="soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/RestService.wsdl" importType="wsdl"/>
    <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesConvivencia" location="WSDLs/PromocionesConvivencia.wsdl" importType="wsdl"/>
    <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesDetalle" location="WSDLs/PromocionesDetalle.wsdl" importType="wsdl"/>
    <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesServicioProducto" location="WSDLs/PromocionesServicioProducto.wsdl" importType="wsdl"/>
    <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PSP_ServicioP_ProdC" location="WSDLs/PSP_ServicioP_ProdC.wsdl" importType="wsdl"/>
    <import namespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ProductoConvivencia" location="WSDLs/ProductoConvivencia.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/RestService"
+           location="WSDLs/RestService.wsdl" importType="wsdl"/>
    <service name="pm_servicesproducts_client_ep" ui:wsdlLocation="WSDLs/PM_ServicesProducts.wsdl">
       <interface.wsdl interface="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts#wsdl.interface(PM_ServicesProducts)"/>
       <binding.ws port="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts#wsdl.endpoint(pm_servicesproducts_client_ep/PM_ServicesProducts_pt)"/>
    </service>
-   <service name="RestService" ui:wsdlLocation="soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/RestService.wsdl">
+   <service name="RestService" ui:wsdlLocation="WSDLs/RestService.wsdl">
       <interface.wsdl interface="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/RestService#wsdl.interface(RestService_ptt)"/>
-      <binding.rest config="WADLs/RestService.wadl"/>
+      <binding.rest config="Adapters/RestService.wadl"/>
    </service>
    <property name="productVersion" type="xs:string" many="false">12.1.3.0.0</property>
    <property name="compositeID" type="xs:string" many="false">63c9a9e3-2f18-4819-82db-cbe882f78ade</property>
@@ -66,13 +67,14 @@
       <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
       <property name="bpel.config.auditLevel">Development</property>
    </component>
-   <component name="Mediator">
-      <implementation.mediator src="Mediators/Mediator1.mplan"/>
+   <component name="MediatorJson">
+      <implementation.mediator src="Mediators/MediatorJson.mplan"/>
       <componentType>
-         <service name="Mediator1" ui:wsdlLocation="soa-infra/services/TotalPlayProcessBPEL/LoginUserApp/RestService.wsdl">
+         <service name="MediatorJson" ui:wsdlLocation="WSDLs/RestService.wsdl">
             <interface.wsdl interface="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/RestService#wsdl.interface(RestService_ptt)"/>
          </service>
-         <reference name="PM_ServicesProducts.pm_servicesproducts_client" ui:wsdlLocation="WSDLs/PM_ServicesProducts.wsdl">
+         <reference name="PM_ServicesProducts.pm_servicesproducts_client"
+                    ui:wsdlLocation="WSDLs/PM_ServicesProducts.wsdl">
             <interface.wsdl interface="http://xmlns.oracle.com/VentasMovil/PM_ServicesProducts/PM_ServicesProducts#wsdl.interface(PM_ServicesProducts)"/>
          </reference>
       </componentType>
@@ -192,14 +194,6 @@
       <target.uri>LoginUserApp</target.uri>
    </wire>
    <wire>
-      <source.uri>RestService</source.uri>
-      <target.uri>Mediator/Mediator1</target.uri>
-   </wire>
-   <wire>
-      <source.uri>Mediator/PM_ServicesProducts.pm_servicesproducts_client</source.uri>
-      <target.uri>PM_ServicesProducts/pm_servicesproducts_client</target.uri>
-   </wire>
-   <wire>
       <source.uri>PM_ServicesProducts/PromocionesConvivencia</source.uri>
       <target.uri>PromocionesConvivencia</target.uri>
    </wire>
@@ -218,5 +212,13 @@
    <wire>
       <source.uri>PM_ServicesProducts/ProductoConvivencia</source.uri>
       <target.uri>ProductoConvivencia</target.uri>
+   </wire>
+   <wire>
+      <source.uri>RestService</source.uri>
+      <target.uri>MediatorJson/MediatorJson</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MediatorJson/PM_ServicesProducts.pm_servicesproducts_client</source.uri>
+      <target.uri>PM_ServicesProducts/pm_servicesproducts_client</target.uri>
    </wire>
 </composite>

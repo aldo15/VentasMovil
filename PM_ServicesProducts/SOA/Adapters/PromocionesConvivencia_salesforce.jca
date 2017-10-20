@@ -1,21 +1,20 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <adapter-config name="PromocionesConvivenciaPortType" adapter="salesforce" wsdlLocation="../WSDLs/PromocionesConvivencia.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
-   <connection-factory location="cloud/CloudAdapter">
-      <non-managed-connection managedConnectionFactoryClassName="oracle.cloud.connector.salesforce.SalesforceConnectionFactory">
-         <property name="targetWSDLURL" value="../WSDLs/enterpriseQA3.0.wsdl"/>
-         <property name="csfkey" value="keySalesforceQA"/>
-         <property name="csfMap" value="SOA"/>
-         <property name="applicationVersion" value="37.0"/>
-      </non-managed-connection>
-   </connection-factory>
-   <endpoint-interaction portType="PromocionesConvivenciaPortType" operation="query">
-      <interaction-spec className="oracle.tip.adapter.cloud.CloudInteractionSpec">
-         <property name="targetOperation" value="query"/>
-         <property name="operationPath" value=""/>
-         <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesConvivencia#new"/>
-         <property name="selectedObjects" value="DP_PromocionConviviencia__c,QueryParameters"/>
-         <property name="oracle.cloud.rt.queryString" value="SELECT Id, Name, Estatus__c, PromocionPlanId__c, PromocionExcId__c FROM DP_PromocionConviviencia__c WHERE PromocionPlanId__c = '&amp;PromocionPlanId__c' and Estatus__c = 'Activo'"/>
-         <property name="oracle.cloud.rt.suppressResponse" value="false"/>
-      </interaction-spec>
-   </endpoint-interaction>
+  <connection-factory location="cloud/CloudAdapter">
+    <non-managed-connection managedConnectionFactoryClassName="oracle.cloud.connector.salesforce.SalesforceConnectionFactory">
+      <property name="targetWSDLURL" value="../WSDLs/enterpriseQA18.0.wsdl"/>
+      <property name="csfkey" value="keySalesforceQA"/>
+      <property name="csfMap" value="SOA"/>
+      <property name="applicationVersion" value="41.0"/>
+    </non-managed-connection>
+  </connection-factory>
+  <endpoint-interaction portType="PromocionesConvivenciaPortType" operation="query">
+    <interaction-spec className="oracle.tip.adapter.cloud.CloudInteractionSpec">
+      <property name="targetOperation" value="query"/>
+      <property name="operationPath" value=""/>
+      <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/PromocionesConvivencia#new"/>
+      <property name="selectedObjects" value="DP_PromocionConviviencia__c,QueryParameters"/>
+      <property name="oracle.cloud.rt.queryString" value="SELECT Id, Name, Estatus__c, PromocionPlanId__c, PromocionExcId__c FROM DP_PromocionConviviencia__c WHERE PromocionPlanId__c = '&amp;PromocionPlanId__c' and Estatus__c = 'Activo'"/>
+      <property name="oracle.cloud.rt.suppressResponse" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
 </adapter-config>

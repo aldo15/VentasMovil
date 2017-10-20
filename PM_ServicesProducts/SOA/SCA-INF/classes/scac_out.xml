@@ -1,0 +1,223 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Faults>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>183</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add function definition for this function "oraext:setFlowInstanceTitle" to the validator</fix>
+      <msg>Unknown function "oraext:setFlowInstanceTitle" used in &lt;bpel:from></msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>546</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrServiciosIncluidos" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>546</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrProductosIncluidos" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>562</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrServiciosIncluidos" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>844</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrServiciosAdicionales" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>844</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrProductosIncluidos" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>860</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrServiciosAdicionales" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1119</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrProductosAdicionales" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1119</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrProductosConvivencia" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1134</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrProductosAdicionales" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1302</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrPromocionesPlan" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1302</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrPromocionesConvivencia" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1374</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrPromocionesPlan" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1374</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrPromocionesDetalle" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1775</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrPromocionesPlan" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1775</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrDP_PromocionesServicioProducto" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1775</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrProductosConvivencia" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1793</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrPromocionesPlan" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1793</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrDP_PromocionesServicioProducto" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1807</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrPromocionesPlan" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1807</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrDP_PromocionesServicioProducto" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>1838</line>
+      <col/>
+      <file>BPEL/PM_ServicesProducts.bpel</file>
+      <name>BPEL/PM_ServicesProducts.bpel</name>
+      <fix>Add a predicate to select an element from the sequence.</fix>
+      <msg>The XPath segment "child::client:ArrPromocionesPlan" selects a sequence of elements - a predicate MAY be needed to correctly select an element.</msg>
+   </Fault>
+</Faults>

@@ -1,21 +1,20 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <adapter-config name="ServiciosAdicionalesPortType" adapter="salesforce" wsdlLocation="../WSDLs/ServiciosAdicionales.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
-   <connection-factory location="cloud/CloudAdapter">
-      <non-managed-connection managedConnectionFactoryClassName="oracle.cloud.connector.salesforce.SalesforceConnectionFactory">
-         <property name="targetWSDLURL" value="../WSDLs/enterpriseQA1.0.wsdl"/>
-         <property name="csfkey" value="keySalesforceQA"/>
-         <property name="csfMap" value="SOA"/>
-         <property name="applicationVersion" value="37.0"/>
-      </non-managed-connection>
-   </connection-factory>
-   <endpoint-interaction portType="ServiciosAdicionalesPortType" operation="query">
-      <interaction-spec className="oracle.tip.adapter.cloud.CloudInteractionSpec">
-         <property name="targetOperation" value="query"/>
-         <property name="operationPath" value=""/>
-         <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales#new"/>
-         <property name="selectedObjects" value="DP_PlanServicio__c,QueryParameters"/>
-         <property name="oracle.cloud.rt.queryString" value="SELECT Id, Name, CantidadEquiposAutomaticos__c, Comentario__c, MaximoAgregar__c, Nombrecomercial__c, NombreEditable__c, PlanId__c, Precio__c, SeActiva__c,  SeFactura__c, ServicioId__c, SRV_Mode__c,  TipoServicio__c, TipoTelefonia__c FROM DP_PlanServicio__c WHERE EsServicioAdicional__c =true and Estatus__c = 'Activo' and PlanId__c = '&amp;PlanId__c' "/>
-         <property name="oracle.cloud.rt.suppressResponse" value="false"/>
-      </interaction-spec>
-   </endpoint-interaction>
+  <connection-factory location="cloud/CloudAdapter">
+    <non-managed-connection managedConnectionFactoryClassName="oracle.cloud.connector.salesforce.SalesforceConnectionFactory">
+      <property name="targetWSDLURL" value="../WSDLs/enterpriseQA18.0.wsdl"/>
+      <property name="csfkey" value="keySalesforceQA"/>
+      <property name="csfMap" value="SOA"/>
+      <property name="applicationVersion" value="41.0"/>
+    </non-managed-connection>
+  </connection-factory>
+  <endpoint-interaction portType="ServiciosAdicionalesPortType" operation="query">
+    <interaction-spec className="oracle.tip.adapter.cloud.CloudInteractionSpec">
+      <property name="targetOperation" value="query"/>
+      <property name="operationPath" value=""/>
+      <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales#new"/>
+      <property name="selectedObjects" value="DP_PlanServicio__c,QueryParameters"/>
+      <property name="oracle.cloud.rt.queryString" value="SELECT Id, Name, CantidadEquiposAutomaticos__c, Comentario__c, MaximoAgregar__c, Nombrecomercial__c, NombreEditable__c, PlanId__c, Precio__c, SeActiva__c,  SeFactura__c, ServicioId__c, SRV_Mode__c,  TipoServicio__c, TipoTelefonia__c FROM DP_PlanServicio__c WHERE EsServicioAdicional__c =true and Estatus__c = 'Activo' and PlanId__c = '&amp;PlanId__c' "/>
+      <property name="oracle.cloud.rt.suppressResponse" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
 </adapter-config>

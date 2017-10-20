@@ -157,6 +157,66 @@
         <reply name="GeneralFailed" partnerLink="pm_servicesproducts_client" variable="outputVariable"
                portType="client:PM_ServicesProducts" operation="process"/>
         <exit name="Exit1"/>
+        <scope name="ScpLogin">
+          <bpelx:annotation>
+            <bpelx:general>
+              <bpelx:property name="userImage">
+                <![CDATA[approver_lg.png]]>
+              </bpelx:property>
+            </bpelx:general>
+          </bpelx:annotation>
+          <sequence>
+            <assign name="AssgLoginUserApp">
+              <copy>
+                <from>$inputVariable.payload/client:Login/client:User</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke2_Login_InputVariable.payload/ns4:userId</to>
+              </copy>
+              <copy>
+                <from>$inputVariable.payload/client:Login/client:Password</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke2_Login_InputVariable.payload/ns4:password</to>
+              </copy>
+              <copy>
+                <from>$inputVariable.payload/client:Login/client:Ip</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke2_Login_InputVariable.payload/ns4:ip</to>
+              </copy>
+              <copy>
+                <from>oraext:setFlowInstanceTitle(string($inputVariable.payload/client:Info/client:IdPlan))</from>
+                <to>$inputVariable.payload/client:Info/client:IdPlan</to>
+              </copy>
+            </assign>
+            <invoke name="InkLoginUserApp" partnerLink="LoginUserApp" portType="ns4:BPELLoginUserApp"
+                    operation="process" inputVariable="Invoke2_Login_InputVariable" bpelx:invokeAsDetail="no"
+                    outputVariable="Invoke2_Login_OutputVariable"/>
+            <if name="If_LoginResult">
+              <documentation>
+                <![CDATA[success]]>
+              </documentation>
+              <condition>$Invoke2_Login_OutputVariable.payload/ns4:Result='0'</condition>
+              <sequence name="If-true">
+                <empty name="Empty1"/>
+              </sequence>
+              <else>
+                <documentation>
+                  <![CDATA[failed]]>
+                </documentation>
+                <assign name="failedLogin">
+                  <copy>
+                    <from>$Invoke2_Login_OutputVariable.payload/ns4:Result</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:Result</to>
+                  </copy>
+                  <copy>
+                    <from>$Invoke2_Login_OutputVariable.payload/ns4:IdResult</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:IdResult</to>
+                  </copy>
+                  <copy>
+                    <from>$Invoke2_Login_OutputVariable.payload/ns4:ResultDescription</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:Description</to>
+                  </copy>
+                </assign>
+              </else>
+            </if>
+          </sequence>
+        </scope>
       </sequence>
     </catchAll>
   </faultHandlers>
@@ -171,66 +231,6 @@
 
     <!-- Receive input from requestor. (Note: This maps to operation defined in PM_ServicesProducts.wsdl) -->
     <receive name="receiveInput" partnerLink="pm_servicesproducts_client" portType="client:PM_ServicesProducts" operation="process" variable="inputVariable" createInstance="yes"/>
-    <scope name="ScpLogin">
-      <bpelx:annotation>
-        <bpelx:general>
-          <bpelx:property name="userImage">
-            <![CDATA[approver_lg.png]]>
-          </bpelx:property>
-        </bpelx:general>
-      </bpelx:annotation>
-      <sequence>
-        <assign name="AssgLoginUserApp">
-          <copy>
-            <from>$inputVariable.payload/client:Login/client:User</from>
-            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke2_Login_InputVariable.payload/ns4:userId</to>
-          </copy>
-          <copy>
-            <from>$inputVariable.payload/client:Login/client:Password</from>
-            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke2_Login_InputVariable.payload/ns4:password</to>
-          </copy>
-          <copy>
-            <from>$inputVariable.payload/client:Login/client:Ip</from>
-            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$Invoke2_Login_InputVariable.payload/ns4:ip</to>
-          </copy>
-          <copy>
-            <from>oraext:setFlowInstanceTitle(string($inputVariable.payload/client:Info/client:IdPlan))</from>
-            <to>$inputVariable.payload/client:Info/client:IdPlan</to>
-          </copy>
-        </assign>
-        <invoke name="InkLoginUserApp" partnerLink="LoginUserApp" portType="ns4:BPELLoginUserApp" operation="process"
-                inputVariable="Invoke2_Login_InputVariable" bpelx:invokeAsDetail="no"
-                outputVariable="Invoke2_Login_OutputVariable"/>
-        <if name="If_LoginResult">
-          <documentation>
-            <![CDATA[success]]>
-          </documentation>
-          <condition>$Invoke2_Login_OutputVariable.payload/ns4:Result='0'</condition>
-          <sequence name="If-true">
-            <empty name="Empty1"/>
-          </sequence>
-          <else>
-            <documentation>
-              <![CDATA[failed]]>
-            </documentation>
-            <assign name="failedLogin">
-              <copy>
-                <from>$Invoke2_Login_OutputVariable.payload/ns4:Result</from>
-                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:Result</to>
-              </copy>
-              <copy>
-                <from>$Invoke2_Login_OutputVariable.payload/ns4:IdResult</from>
-                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:IdResult</to>
-              </copy>
-              <copy>
-                <from>$Invoke2_Login_OutputVariable.payload/ns4:ResultDescription</from>
-                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:Result/client:Description</to>
-              </copy>
-            </assign>
-          </else>
-        </if>
-      </sequence>
-    </scope>
     <scope name="ScpServicesProducts">
       <sequence>
         <assign name="InicializaArrs">
@@ -347,6 +347,10 @@
                   <copy>
                     <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:TipoTelefonia__c)</from>
                     <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:TipoTelefonia</to>
+                  </copy>
+                  <copy>
+                    <from>string($Invoke1_ServsIncluidos_OutputVariable.parameters/ns2:QueryResults/ns2:records[$SIncluidos]/ns2:Orden__c)</from>
+                    <to>$AuxSIncluidos.payload/client:ArrServiciosIncluidos/client:Orden</to>
                   </copy>
                   <copy>
                     <from>''</from>
@@ -1711,63 +1715,78 @@
                                     <to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:EsProntoPago</to>
                                   </copy>
                                 </assign>
-                                <assign name="AssgProductoId">
-                                  <copy>
-                                    <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records/ns19:Id)</from>
-                                    <to>$Invoke_PromoPConvivencia_InputVariable.parameters/ns21:QueryParameters/ns22:ProductoId__c</to>
-                                  </copy>
-                                </assign>
-                                <invoke name="InkPromoPConvivencia" bpelx:invokeAsDetail="no"
-                                        partnerLink="ProductoConvivencia" portType="ns21:ProductoConvivenciaPortType"
-                                        operation="query" inputVariable="Invoke_PromoPConvivencia_InputVariable"
-                                        outputVariable="Invoke_PromoPConvivencia_OutputVariable"/>
-                                <forEach parallel="no" counterName="PromoPConvivencia" name="PromoPConvivencia">
-                                  <bpelx:skipCondition>count($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records)&gt;1</bpelx:skipCondition>
-                                  <startCounterValue>1</startCounterValue>
-                                  <finalCounterValue>count($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records)</finalCounterValue>
-                                  <scope name="Scope16">
-                                    <variables>
-                                      <variable name="AuxPromoPConvivencia"
-                                                messageType="client:PM_ServicesProductsResponseMessage"/>
-                                    </variables>
-                                    <assign name="AssgAuxPromoPConvivencia">
+                                <if name="If-Id_PSPServicioProduct">
+                                  <documentation>
+                                    <![CDATA[NotEmpty]]>
+                                  </documentation>
+                                  <condition>string-length($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records/ns19:Id)&gt;0</condition>
+                                  <sequence>
+                                    <assign name="AssgProductoId">
                                       <copy>
-                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Id)</from>
-                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Id</to>
+                                        <from>string($Invoke_PSPServicioProduct_OutputVariable.parameters/ns19:QueryResults/ns19:records/ns19:Id)</from>
+                                        <to>$Invoke_PromoPConvivencia_InputVariable.parameters/ns21:QueryParameters/ns22:ProductoId__c</to>
                                       </copy>
-                                      <copy>
-                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Name)</from>
-                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Name</to>
-                                      </copy>
-                                      <copy>
-                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Comentario__c)</from>
-                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Comentario</to>
-                                      </copy>
-                                      <copy>
-                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Estatus__c)</from>
-                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Estatus</to>
-                                      </copy>
-                                      <copy>
-                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:ProductoId__c)</from>
-                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:ProductoId</to>
-                                      </copy>
-                                      <copy>
-                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:ProductoExcIncId__c)</from>
-                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:ProductoExcIncId</to>
-                                      </copy>
-                                      <copy>
-                                        <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Tipo__c)</from>
-                                        <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Tipo</to>
-                                      </copy>
-                                      <extensionAssignOperation>
-                                        <bpelx:insertAfter>
-                                          <bpelx:from>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia</bpelx:from>
-                                          <bpelx:to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia</bpelx:to>
-                                        </bpelx:insertAfter>
-                                      </extensionAssignOperation>
                                     </assign>
-                                  </scope>
-                                </forEach>
+                                    <invoke name="IvkProductoConvivencia" bpelx:invokeAsDetail="no"
+                                            partnerLink="ProductoConvivencia"
+                                            portType="ns21:ProductoConvivenciaPortType" operation="query"
+                                            inputVariable="Invoke_PromoPConvivencia_InputVariable"
+                                            outputVariable="Invoke_PromoPConvivencia_OutputVariable"/>
+                                    <forEach parallel="no" counterName="PromoPConvivencia" name="PromoPConvivencia">
+                                      <bpelx:skipCondition>count($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records)&lt;1</bpelx:skipCondition>
+                                      <startCounterValue>1</startCounterValue>
+                                      <finalCounterValue>count($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records)</finalCounterValue>
+                                      <scope name="Scope16">
+                                        <variables>
+                                          <variable name="AuxPromoPConvivencia"
+                                                    messageType="client:PM_ServicesProductsResponseMessage"/>
+                                        </variables>
+                                        <assign name="AssgAuxPromoPConvivencia">
+                                          <copy>
+                                            <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Id)</from>
+                                            <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Id</to>
+                                          </copy>
+                                          <copy>
+                                            <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Name)</from>
+                                            <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Name</to>
+                                          </copy>
+                                          <copy>
+                                            <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Comentario__c)</from>
+                                            <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Comentario</to>
+                                          </copy>
+                                          <copy>
+                                            <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Estatus__c)</from>
+                                            <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Estatus</to>
+                                          </copy>
+                                          <copy>
+                                            <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:ProductoId__c)</from>
+                                            <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:ProductoId</to>
+                                          </copy>
+                                          <copy>
+                                            <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:ProductoExcIncId__c)</from>
+                                            <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:ProductoExcIncId</to>
+                                          </copy>
+                                          <copy>
+                                            <from>string($Invoke_PromoPConvivencia_OutputVariable.parameters/ns21:QueryResults/ns21:records[$PromoPConvivencia]/ns21:Tipo__c)</from>
+                                            <to>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia/client:Tipo</to>
+                                          </copy>
+                                          <extensionAssignOperation>
+                                            <bpelx:insertAfter>
+                                              <bpelx:from>$AuxPromoPConvivencia.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia</bpelx:from>
+                                              <bpelx:to>$AuxPromoServProd.payload/client:ArrPromocionesPlan/client:ArrDP_PromocionesServicioProducto/client:DP_ServicioProducto/client:ArrProductosConvivencia</bpelx:to>
+                                            </bpelx:insertAfter>
+                                          </extensionAssignOperation>
+                                        </assign>
+                                      </scope>
+                                    </forEach>
+                                  </sequence>
+                                  <else>
+                                    <documentation>
+                                      <![CDATA[Empty]]>
+                                    </documentation>
+                                    <empty name="Empty2"/>
+                                  </else>
+                                </if>
                                 <assign name="AssAuxPromoServProd">
                                   <extensionAssignOperation>
                                     <bpelx:insertAfter>
@@ -1804,11 +1823,6 @@
                     </sequence>
                   </scope>
                   <assign name="AssgPromoOutput">
-                    <extensionAssignOperation>
-                      <bpelx:remove>
-                        <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia[1]</bpelx:target>
-                      </bpelx:remove>
-                    </extensionAssignOperation>
                     <extensionAssignOperation>
                       <bpelx:remove>
                         <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle[1]</bpelx:target>

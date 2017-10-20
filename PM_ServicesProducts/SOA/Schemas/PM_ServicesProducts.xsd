@@ -52,6 +52,7 @@
                      <element name="SRV_Mode" type="string"/>
                      <element name="TipoServicio" type="string"/>
                      <element name="TipoTelefonia" type="string"/>
+                     <element name="Orden" type="string"/>
                      <element name="ArrProductosIncluidos" maxOccurs="unbounded" minOccurs="0">
                         <complexType>
                            <sequence>
