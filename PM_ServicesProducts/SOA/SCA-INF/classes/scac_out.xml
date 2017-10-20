@@ -213,7 +213,7 @@
    <Fault>
       <severity>warning</severity>
       <loc/>
-      <line>1838</line>
+      <line>1843</line>
       <col/>
       <file>BPEL/PM_ServicesProducts.bpel</file>
       <name>BPEL/PM_ServicesProducts.bpel</name>

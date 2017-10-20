@@ -17,7 +17,7 @@
       <partnerlink name="PromocionesServicioProducto" x="1886" y="2439" side="right"/>
       <partnerlink name="ProductoConvivencia" x="1886" y="1643" side="right"/>
    </partnerlink_locations>
-   <graph_layout viewport="987,16,946,623" show_swimlanes="true">
+   <graph_layout viewport="639,3675,946,623" show_swimlanes="true">
       <layout_item collapsed="false" xpath="/process" type="process" showhandlers="true"/>
       <layout_item collapsed="false" xpath="/process/faultHandlers/catchAll" type="catchall"/>
       <layout_item collapsed="false" xpath="/process/faultHandlers/catchAll/sequence" type="sequence"/>

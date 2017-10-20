@@ -1825,6 +1825,11 @@
                   <assign name="AssgPromoOutput">
                     <extensionAssignOperation>
                       <bpelx:remove>
+                        <bpelx:target>$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesConvivencia[1]</bpelx:target>
+                      </bpelx:remove>
+                    </extensionAssignOperation>
+                    <extensionAssignOperation>
+                      <bpelx:remove>
                         <bpelx:target expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$AuxPromociones.payload/client:ArrPromocionesPlan/client:ArrPromocionesDetalle[1]</bpelx:target>
                       </bpelx:remove>
                     </extensionAssignOperation>
