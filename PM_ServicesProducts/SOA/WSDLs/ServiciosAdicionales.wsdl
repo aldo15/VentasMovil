@@ -1596,8 +1596,8 @@
              elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales"
              xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales"
              xmlns:ns4="http://xml.oracle.com/types/ServiciosAdicionales" xmlns:ns6="urn:enterprise.soap.sforce.com">
-            <xs:import namespace="urn:enterprise.soap.sforce.com"/>
             <xs:import namespace="http://xml.oracle.com/types/ServiciosAdicionales"/>
+            <xs:import namespace="urn:enterprise.soap.sforce.com"/>
             <xs:element name="query" type="ns2:queryType"/>
             <xs:complexType name="queryType">
                 <xs:sequence>
@@ -1636,6 +1636,7 @@
                     <xs:element name="PlanId__c" type="ns6:ID" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
                     <xs:element name="TipoServicio__c" type="xs:string" nillable="true" minOccurs="0"
                          maxOccurs="1"/>
+                    <xs:element name="Orden__c" type="xs:double" nillable="true" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="SeActiva__c" type="xs:boolean" nillable="true" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="Precio__c" type="xs:double" nillable="true" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="Id" type="ns6:ID" nillable="true" minOccurs="0" maxOccurs="unbounded"/>

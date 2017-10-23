@@ -13,7 +13,7 @@
       <property name="operationPath" value=""/>
       <property name="oracle.cloud.rt.sfdcAdapterNamespace" value="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/ServiciosAdicionales#new"/>
       <property name="selectedObjects" value="DP_PlanServicio__c,QueryParameters"/>
-      <property name="oracle.cloud.rt.queryString" value="SELECT Id, Name, CantidadEquiposAutomaticos__c, Comentario__c, MaximoAgregar__c, Nombrecomercial__c, NombreEditable__c, PlanId__c, Precio__c, SeActiva__c,  SeFactura__c, ServicioId__c, SRV_Mode__c,  TipoServicio__c, TipoTelefonia__c FROM DP_PlanServicio__c WHERE EsServicioAdicional__c =true and Estatus__c = 'Activo' and PlanId__c = '&amp;PlanId__c' "/>
+      <property name="oracle.cloud.rt.queryString" value="SELECT Id, Name, CantidadEquiposAutomaticos__c, Comentario__c, MaximoAgregar__c, Nombrecomercial__c, NombreEditable__c, PlanId__c, Precio__c, SeActiva__c,  SeFactura__c, ServicioId__c, SRV_Mode__c,  TipoServicio__c, TipoTelefonia__c, Orden__c FROM DP_PlanServicio__c WHERE EsServicioAdicional__c =true and Estatus__c = 'Activo' and PlanId__c = '&amp;PlanId__c' "/>
       <property name="oracle.cloud.rt.suppressResponse" value="false"/>
     </interaction-spec>
   </endpoint-interaction>

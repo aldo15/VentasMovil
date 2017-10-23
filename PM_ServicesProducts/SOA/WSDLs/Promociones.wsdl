@@ -16,13 +16,15 @@
         </plnk:role>
     </plnk:partnerLinkType>
     <wsdl:types>
-        <xs:schema xmlns="http://xml.oracle.com/types/Promociones" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-             targetNamespace="http://xml.oracle.com/types/Promociones" xmlns:ns3="http://xml.oracle.com/types/Promociones">
-            <xs:complexType name="QueryParameters">
-                <xs:all>
-                    <xs:element name="DP_Plan__c" type="xs:string" minOccurs="1" maxOccurs="1"/>
-                </xs:all>
-            </xs:complexType>
+        <xs:schema xmlns="urn:sobject.enterprise.soap.sforce.com" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="urn:sobject.enterprise.soap.sforce.com" xmlns:ns7="urn:sobject.enterprise.soap.sforce.com">
+            <xs:import namespace="urn:enterprise.soap.sforce.com"/>
+            <xsd:complexType name="sObject">
+                <xsd:sequence>
+                    <xsd:element name="fieldsToNull" type="xsd:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="Id" type="tns:ID" nillable="true"/>
+                </xsd:sequence>
+            </xsd:complexType>
         </xs:schema>
         <xs:schema xmlns="urn:enterprise.soap.sforce.com" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"
              targetNamespace="urn:enterprise.soap.sforce.com" xmlns:ns5="urn:enterprise.soap.sforce.com">
@@ -1361,25 +1363,23 @@
                 </xsd:restriction>
             </xsd:simpleType>
         </xs:schema>
-        <xs:schema xmlns="urn:sobject.enterprise.soap.sforce.com" elementFormDefault="qualified"
-             xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:sobject.enterprise.soap.sforce.com"
-             xmlns:ns7="urn:sobject.enterprise.soap.sforce.com">
-            <xs:import namespace="urn:enterprise.soap.sforce.com"/>
-            <xsd:complexType name="sObject">
-                <xsd:sequence>
-                    <xsd:element name="fieldsToNull" type="xsd:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-                    <xsd:element name="Id" type="tns:ID" nillable="true"/>
-                </xsd:sequence>
-            </xsd:complexType>
+        <xs:schema xmlns="http://xml.oracle.com/types/Promociones" elementFormDefault="qualified"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xml.oracle.com/types/Promociones"
+             xmlns:ns3="http://xml.oracle.com/types/Promociones">
+            <xs:complexType name="QueryParameters">
+                <xs:all>
+                    <xs:element name="DP_Plan__c" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                </xs:all>
+            </xs:complexType>
         </xs:schema>
         <xs:schema xmlns="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/Promociones"
              elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/Promociones"
              xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/salesforce/VentasMovil/PM_ServicesProducts/Promociones"
              xmlns:ns4="http://xml.oracle.com/types/Promociones" xmlns:ns6="urn:enterprise.soap.sforce.com"
              xmlns:ns8="urn:sobject.enterprise.soap.sforce.com">
-            <xs:import namespace="urn:sobject.enterprise.soap.sforce.com"/>
-            <xs:import namespace="urn:enterprise.soap.sforce.com"/>
             <xs:import namespace="http://xml.oracle.com/types/Promociones"/>
+            <xs:import namespace="urn:enterprise.soap.sforce.com"/>
+            <xs:import namespace="urn:sobject.enterprise.soap.sforce.com"/>
             <xs:element name="query" type="ns2:queryType"/>
             <xs:complexType name="queryType">
                 <xs:sequence>
